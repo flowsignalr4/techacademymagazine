@@ -1,0 +1,1413 @@
+%\documentclass{amsart}
+\documentclass[11pt]{article}
+\usepackage{amsmath,amsfonts,amsthm,amssymb}
+\usepackage[margin=1in,letterpaper]{geometry}
+\usepackage[dvipdfmx]{graphicx}
+%%\everymath{\displaystyle}
+%%%%%%%%%%%%%%%%
+\usepackage{physics}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%定理環境
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{defi}{Definition}[section]
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[defi]{Corollary}
+\newtheorem{lemma}[defi]{Lemma}
+\newtheorem{prop}[defi]{Proposition}
+\newtheorem{conj}[defi]{Conjecture}
+\newtheorem{claim}[defi]{Claim}
+\newtheorem{eg}[defi]{Example}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%引用しないalignの番号は表示しない
+\usepackage{mathtools}
+%\mathtoolsset{showonlyrefs=true}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%太字
+\usepackage{bm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\midをカッコのサイズに合わせる
+\newcommand{\midd}{\mathrel{}\middle|\mathrel{}}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\Hom}{Hom}
+%\DeclareMathOperator{\rank}{rank}
+%\DeclareMathOperator{\ker}{ker}
+%\DeclareMathOperator{\span}{span}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage[notcite,notref]{showkeys}
+\renewcommand*{\showkeyslabelformat}[1]{%
+  \fbox{\parbox{2cm}{\normalfont\small\sffamily#1}}}
+  
+\title{Characterizing the Universal Rigidity of Generic Symmetric Tensegrities}
+\author{Ryoshun Oba \and Shinichi Tanigawa}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+A {\em tensegrity} is a stable structure made from cables and stiff bars (or struts). 
+Since the invention by Kenneth Snelson, the theory of tensegrities and applications have been extensively studied from various perspectives. 
+A mathematical foundation for the rigidity or stability analysis has been established in the context of rigidity theory~\cite{RW81, CW95,connelly1982rigidity}.
+Following a notation in that context, we define a {\em ($d$-dimensional)  tensegrity}  as a triple $(G, \sigma, p)$ of an {\em edge-signed graph} $(G,\sigma)$ with $\sigma:E(G)\rightarrow \{-1,0,+1\}$ and a {\em point-configuration} $p:V(G)\rightarrow \mathbb{R}^d$.
+Here each vertex $i$ corresponds to a joint $p_i=p(i)\in \mathbb{R}^d$, 
+each edge $e=ij$ with $\sigma(e)=+1/0/-1$ corresponds to a cable/bar/strut, respectively, between joints $p_i$ and  $p_j$.
+When every member is a stiff bar (that is, $\sigma(e)=0$ for every $e\in E(G)$), a tensegrity is called a {\em bar-joint framework},
+which is the central object of study in rigidity theory. 
+
+In a tensegrity all bars are stiff and cannot change the length while cables can be shorter and struts can be longer.
+Under the system of these geometric constraints, the (global) rigidity of the tensegrity is defined in terms of the uniqueness of the solution of the system  up to isometries. More formally, given a signed graph $(G,\sigma)$,  two point-configurations $p, q$ for $(G,\sigma)$ are said to be {\em  congruent} if 
+\[
+\|p_i -p_j\|=\|q_i -q_j\| \text{ for all } i, j \in V(G),
+\]  
+where $\|\cdot\|$ denotes the Euclidean norm, and a tensegrity  $(G,\sigma,p)$ is {\em congruent} to a tensegrity $(G,\sigma,q)$ if $p$ is congruent to $q$. 
+We say that  a tensegrity  $(G,\sigma,p)$ {\em dominates} a tensegrity $(G,\sigma,q)$ 
+if 
+\begin{align*}
+\|p_i -p_j\|&\geq \|q_i -q_j\| \text{ for all $e=ij \in E(G)$ with $\sigma(e)=+1$}, \\
+\|p_i -p_j\|&= \|q_i -q_j\| \text{ for all $e=ij \in E(G)$ with $\sigma(e)=0$, and} \\ 
+\|p_i -p_j\|&\leq \|q_i -q_j\| \text{ for all $e=ij \in E(G)$ with $\sigma(e)=-1$}.
+\end{align*} 
+This dominance captures the set of possible deformations of a given tensegrity $(G,\sigma, p)$, 
+where a tensegrity $(G,\sigma,q)$ satisfies the geometric constraints posed by cable/bar/struts of $(G,\sigma, p)$ if and only if $(G,\sigma,q)$ is dominated by $(G,\sigma,p)$.
+A $d$-dimensional tensegrity $(G,\sigma,p)$ is {\em globally rigid} if every $d$-dimensional tensegrity $(G,\sigma,q)$ dominated by $(G,\sigma,p)$ is congruent to $(G,\sigma,p)$.
+
+Connelly~\cite{C80,connelly1982rigidity} initiated the rigidity analysis of tensegrities, and in his paper \cite{connelly1982rigidity} in 1982 he gave a celebrated sufficient condition for the global rigidity in terms of stress matrices (that is, graph Laplacian matrices weighted by equilibrium self-stresses).
+Tensegrities satisfying his sufficient condition are called {\em super stable}, and super stability is now used as a major criteria for structural engineers to develop new tensegrities (see, e.g.,\cite{ZO15}).
+
+Recently Connelly's super stability condition again got an attention in the context of the sensor network localization or the graph realization problem~\cite{SY07,alfakih2007dimensional,,A14}. 
+To understand the exact solvability of the SDP relaxation, Ye and So~\cite{SY07} looked at a stronger rigidity property, called universal rigidity. Suppose that $(G,\sigma,p)$ is a $d$-dimensional tensegrity whose ambient space $\mathbb{R}^d$ lies in $\mathbb{R}^{d'}$ for each integer $d'\geq d$.
+Then $(G,\sigma,p)$ is also a tensegrity in $\mathbb{R}^{d'}$. 
+We say that $(G,\sigma,p)$ is {\em universally rigid} if $(G,\sigma,p)$ is globally rigid in $\mathbb{R}^{d'}$ for every integer $d'\geq d$.
+Clearly, universal rigidity implies global rigidity but the converse implication does not hold in general as indicated in Figure~? (See, e.g., ? for further interaction between two rigidity concepts.)
+
+Although universal rigidity is stronger than global rigidity, super stability still implies universal rigidity as it is implicit in Connelly's original work~\cite{connelly1982rigidity}. It turns out  that super stability even characterizes universal rigidity for almost all bar-joint frameworks.
+Specifically we say that a tensegrity (or a bar-joint framework) is {\em generic} if the set of coordinates of the points is algebraically independent over $\mathbb{Q}$. 
+In 2014, Gortler and Thurston~\cite{GT} proved that a generic bar-joint framework $(G,p)$ is universally rigid if and only if it is super stable.
+
+The goal of this paper is to extend the Gortler-Thurston characterization in two directions. 
+We first extend the result to tensegrities, and show that universal rigidity and super stability coincide for generic tensegrities.
+We then extend it to tensegrities with point group symmetry, 
+where  a finite point group faithfully acts on the underlying signed graphs and the point-configurations are compatible with this action (see Section~? for the formal definition.) 
+Note that a priori a tensegrity with point group symmetry is not generic, 
+but we shall prove that a characterization still holds as long as  tensegrities are ``generic modulo symmetry''.
+
+As given in catalog of tensegrities~?, most of existing tensegrities exhibit symmetry (or, compositions of simple symmetric ``modules''),
+and building larger tensegrities based on group symmetry is now a standard technique in structural engineering. The technique was initiated by Connelly and Terrell~\cite{CT95}, where they showed how to simplify the super stability condition via finite group representation theory.
+Although their paper focuses on particular instances, the technique is general enough to design a larger class of  symmetric tensegrities~\cite{CB98}.
+An implication of our result is that any  universally rigid tensegrities with symmetrically-generic point-configurations can be obtained 
+from stress matrices constructed as in the method of Connelly and Terrell.
+
+Technically our work is closely related to the topic of {\em strict complementarity} in semidefinite programming problems, or equivalently to the face exposedness of projections of positive semidefinite cones. Understanding the existence of strict complementarity pair of primal and dual solutions is a classical  but still on-going research topic in convex optimization (see, e.g., \cite{dCT1} for a recent result). 
+As explained in  Section~?,  the characterization problem of the universal rigidity  of bar-joint frameworks is known to be equivalent to the existence of strict complementarity pairs of primal and dual solutions in the Euclidean matrix completion problem. 
+There are several researchers that answer the characterization problem (or  the existence of strict complementarity pair) for special classes of graphs~\cite{ATY13,DPW15,T17} while Gortler-Thurston~\cite{GT} solved the  problem assuming a certain genericity of input entries.  This paper provides  a new  direction based on group symmetry to go beyond generic instances.
+
+
+We should remark that, as shown by Connelly and Gortler~\cite{connelly2015iterative},  the universal rigidity of tensegrities can be characterized by a sequence of dual solutions in the facial reduction procedure by Borwein and Wolkowicz. 
+We however believe that the characterization in terms of stress matrices (or  weighted Laplacian) is significant to develop connections to structural engineering and other mathematical topics such as spectral graph theory.
+
+Our proof strategy is based on the block-diagonalization technique for symmetric SDP. 
+Here the general idea is to use the  block-diagonalization of the underlying matrix algebra to decompose SDP instances to smaller pieces,
+and the method is successfully used to solve large scaled SDP problems, see,e.g.~\cite{bachoc2012invariant},
+(In fact a pioneering work of this technique by Kanno et al.~ is motivated from the optimal design of symmetric bar-joint frameworks.)
+Our technical contribution is to use the block-diagonalization technique to analyze the facial structures of SDP problems rather than for reducing computational cost, and our proof essentially relies on  the theory of {\em real} irreducible representation.
+
+The paper is organized as follows...
+
+  
+\section{Semidefinite Programming Problem for Universal Rigidity}
+In this section we shall explain the background materials for analyzing universal rigidity from the view point of semidefinite programming.
+
+Throughout the paper we shall use the following notations.
+Let $V$ be a finite set with $|V|=n$ (typically $V=\{1,2,\dots, n\}$).
+Let $\mathbb{R}^V$ be the $n$-dimensional Euclidean space whose each entry is indexed by each element of $V$.
+For $i\in V$, let $\bm{e}_i$ be the unit vector of $\mathbb{R}^V$ whose $i$-th entry is one and all other entries are zero,
+and let ${\bm 1}_V=\sum_{i\in V} \bm{e}_i$.
+
+Similarly, let $\mathcal{S}^V$ be the set of all $n \times n$ symmetric matrices whose entries are indexed by the pairs of elements in $V$. Throughout the paper, $\mathcal{S}^V$ is regarded as a Euclidean space by using the trace inner product $\langle \cdot , \cdot \rangle$ defined by $\langle A,B \rangle=\text{tr}AB$.
+If $X \in \mathcal{S}^V$ is positive semidefinite, it is denoted as $X \succeq 0$,
+and let $\mathcal{S}^V_+=\{ X \in \mathcal{S}^V: X\succeq 0\}$.
+For $\mathcal{W}\subseteq \mathcal{S}^V$, denote $\mathcal{W}^{\bot}=\{X\in \mathcal{S}^V: \langle X, Y\rangle=0 \ (Y\in \mathcal{W})\}$, that is, the orthogonal complement of the linear span of $\mathcal{W}$. 
+%
+
+For a graph $G$, $N_G(i)$ be the set of all neighbors of $i\in V(G)$ in $G$, and let $\overline{N}_G(i)=N_G(i)\cup \{i\}$.
+
+
+
+
+\subsection{Weighted Laplacian and Configurations}
+For the SDP formulation we shall first define the space of Laplacian matrices. 
+
+Given a graph $G=(V,E)$ with edge weight $\omega:E\rightarrow \mathbb{R}$, its {\em Laplacian} $L_{G,\omega}$ is 
+defined by 
+\[
+L_{G,\omega}:=\sum_{e=ij\in E} \omega_{ij} F_{ij},
+\]
+where
+\[
+F_{ij}:=(\bm{e}_i-\bm{e}_j)(\bm{e}_i-\bm{e}_j)^\top.
+\]
+It always satisfies $L_{G,\omega}{\bm 1}_V=0$ and ${\bm 1}_V^{\top} L_{G,\omega}=0$.
+A weighted Laplacian of the complete graph on $V$ is simply called a {\em Laplacian matrix}, (that is, a symmetric matrix $L$ is Laplacian if $L{\bm 1}_V=0$ and ${\bm 1}_V^{\top} L=0$).
+Let $\mathcal{L}^V$ be the set of all Laplacian matrices. Then $\mathcal{L}^V$ is a linear subspace of $\mathcal{S}^V$ given by
+\[
+\mathcal{L}^V={\rm span}\{F_{ij}: i,j\in V, i\neq j\},
+\]
+where $\{F_{ij}: i,j\in V, i\neq j\}$ forms a basis.
+
+Let $J_V={\bm 1}_V {\bm 1}_V^{\top}$.
+When $L\succeq 0$, $L\in \mathcal{L}^V$ if and only if  $\langle L, J_V\rangle=0$.
+Hence the set of positive semidefinite Laplacian matrices  $\mathcal{L}_+^V$ is given by 
+\[
+\mathcal{L}_+^V=\mathcal{S}_+^V\cap \{J_V\}^{\bot}. 
+\]
+
+Let $q:V\rightarrow \mathbb{R}^d$ be a $d$-dimensional point configuration for some positive integer $d$. 
+We identify $q$ with a matrix $Q$ of size $d\times n$ whose $i$th column vector is $q_i$. 
+We then have $Q^{\top} Q\succeq 0$, 
+and $\langle Q^\top Q, J_V \rangle = 0$ holds if and only if the center of gravity of $q(V)$ is the origin, i.e., $\sum_{i\in V} q_i=0$. 
+Since the properties we are interested in (such as universal rigidity) are invariant by translations, 
+throughout the paper we shall focus on tensegrities whose  center of gravity is at the origin.
+
+We denote by $\mathcal{C}_d(V)$ the set of all point configurations $q:V\rightarrow \mathbb{R}^d$ such that $\sum_{i\in V} q_i=0$ and $q(V)$ affinely span $\mathbb{R}^d$,
+and let $\mathcal{C}(V)=\bigcup_{d\in \mathbb{Z}_{\geq 0}} \mathcal{C}_d(V)$. 
+Then we have  
+\begin{equation}\label{eq:conf2}
+\{L\in \mathcal{L}^V_+: \rank L=d\}=\{Q^{\top} Q: q\in \mathcal{C}_d(V)\}
+\end{equation}
+and 
+\begin{equation}\label{eq:conf}
+\mathcal{L}^V_+=\{Q^{\top} Q: q\in \mathcal{C}(V)\}.
+\end{equation}
+
+\subsection{SDP Formulation}
+Let $(G,\sigma, p)$ be a $d$-dimensional tensegrity.  
+Let $E_0=\sigma^{-1}(0)$, $E_+=\sigma^{-1}(+1)$, $E_-=\sigma^{-1}(-1)$.
+We consider the following semidefinite programming problem (SDP):
+%    \begin{align*}
+%        &\text{(P)} & & \text{max.} & & 0 \\
+%        & & &\text{s.t.} & & \langle X, (\bm{e}_i-\bm{e}_j)(\bm{e}_i-\bm{e}_j)^\top \rangle   =  \| p_i-p_j\|^2 (ij \in E_0) \\
+%        & & &            & & \langle X, (\bm{e}_i-\bm{e}_j)(\bm{e}_i-\bm{e}_j)^\top \rangle \geq \| p_i-p_j\|^2 (ij \in E_+) \\
+%        & & &            & & \langle X, (\bm{e}_i-\bm{e}_j)(\bm{e}_i-\bm{e}_j)^\top \rangle \leq \| p_i-p_j\|^2 (ij \in E_-) \\
+%        & & &            & & X \in \mathcal{L}^V_+
+%    \end{align*}    
+    \[
+\begin{array}{llll}
+        \text{(P)} &  \text{max.}  & 0 \\
+         & \text{s.t.}  & \langle X, F_{ij} \rangle   =  \| p_i-p_j\|^2 &(ij \in E_0) \\
+         &              & \langle X, F_{ij} \rangle \leq \| p_i-p_j\|^2 &(ij \in E_+) \\
+         &              & \langle X, F_{ij} \rangle \geq \| p_i-p_j\|^2 &(ij \in E_-) \\
+         &              & X \in \mathcal{L}^V_+.
+    \end{array}
+\]
+By (\ref{eq:conf}) any feasible $X$ is written as $X=Q^{\top}Q$ for some $q\in \mathcal{C}(V)$.     
+Moreover, 
+\[
+\langle Q^\top Q, F_{ij}\rangle=\langle Q^\top Q, (\bm{e}_i-\bm{e}_j)(\bm{e}_i-\bm{e}_j)^\top \rangle = \|q_i-q_j\|^2
+\]
+holds, which means that $Q^\top Q$ is feasible if and only if 
+    $(G,\sigma,q)$ is dominated by $(G,\sigma,p)$.
+It can be also checked that $Q^\top Q=P^{\top} P$ holds if and only if $p$ and $q$ are congruent.
+    Therefore, we have the following.
+    \begin{prop} \label{prop:uniqueness}
+        $(G,\sigma,p)$ is universally rigid if and only if (P) has a unique feasible solution.
+    \end{prop}
+Since $\mathcal{L}^V_+\subset \mathcal{L}^V$ and $F_{ij}\in \mathcal{L}^V$, we can consider the dual problem of (P) in $\mathcal{L}^V$, that is, 
+\[
+    \begin{array}{llll}
+        \text{(D)} & \text{min.}  & \sum_{ij \in E(G)} \omega_{ij}\|p_i-p_j\|^2 \\
+         & \text{s.t.}  & \sum_{ij \in E(G)} \omega_{ij} F_{ij} \succeq O \\
+         &   & \sigma(ij)\omega_{ij} \geq 0 & (ij\in E(G)).
+    \end{array}
+\]
+By weak duality, the dual optimal value is at least $0$, and it is indeed $0$ as it is attained by $\omega=0$.
+
+
+
+If we consider a dual variable $\omega:E(G)\rightarrow \mathbb{R}$ as an edge weight of $G$, 
+a dual constraint is written by $L_{G,\omega}\succeq 0$. 
+Moreover, the objective function is equal to $\langle P^\top P,L_{G,\omega} \rangle$. 
+Hence $L_{G,\omega}\succeq 0$ implies that $\omega$ is dual optimal if and only if $PL_{G,\omega}=0$.
+In terms of $p$, the latter condition becomes
+\begin{equation}\label{eq:equi}
+\sum_{j \in N_G(i)} \omega_{ij}(p_i-p_j)=0 \qquad (i\in V(G)).
+\end{equation}
+%where $N_G(i)$ denotes the set of neighbors in $G$.
+
+The equation (\ref{eq:equi}) is nothing but the {\em equilibrium condition} for structures to be statically rigid, and the equation frequently appears in rigidity theory. In general, for a tensegrity $(G,\sigma, p)$, an edge weight $\omega:E(G)\rightarrow \mathbb{R}$ is said to be an {\em equilibrium stress} if $\omega$ satisfies (\ref{eq:equi}).
+Also $\omega$ is said to be {\em proper} if 
+\begin{equation}\label{eq:proper}
+\sigma(ij)\omega_{ij}\geq 0\qquad (ij\in E(G)).
+\end{equation}
+We further say that $\omega$ is {\em strictly proper} if (\ref{eq:proper}) holds with strict inequality for every $ij \in E_+ \cup E_-$.
+The condition (\ref{eq:proper}) reflects a physical fact that each cable only has a tension while each strut only has a compression (see~\cite{RW81} for more details).  
+
+With this notation, the discussion is summarized as follows.
+    \begin{prop} \label{prop dual and ESM}
+     An edge weight $\omega:E(G)\rightarrow \mathbb{R}$ is an optimal solution of (D) if and only if it is a proper equilibrium stress of $(G,\sigma,p)$. 
+    \end{prop}
+
+\subsection{Facial Structure of $\mathcal{L}_+^V$}
+In the next two subsections, we shall provide high level ideas of Connelly's sufficient condition and Gortler-Thurston's characterization 
+since our  technical result will be built on these ideas.
+The key ingredient in both results are the facial structure of $\mathcal{L}_+^V$.
+
+Let  $C$ be a non-empty convex set in a Euclidean space.
+ The dimension of $C$ is the {\em  dimension} of the smallest affine subspace containing $C$ and is denoted as $\dim C$.
+ A convex subset $F \subseteq C$ is a {\em  face} if for any $x,y \in C$, $\frac{x+y}{2} \in F$ implies $x,y \in F$.
+ For $x \in C$, the smallest face containing $x$ is called the  {\em minimal face} of $x$ and is denoted as $F_C(x)$.
+ We say that a hyperplane $H$ {\em exposes} a face $F$ of $C$ if $F=C\cap H$ and $H$ supports $C$ (i.e., $C$ lies on the closed halfspace defined by $H$). A face $F$ is said to be {\em exposed} if there is a hyperplane exposing $F$. 
+ To simplify the presentaton, we also consider the ambient space as a hyperplane whose normal vector is zero vector.
+ Then $C$ itself is always exposed.
+ It is well-known that every face of ${\cal S}_+^V$ is exposed in ${\cal S}^V$, 
+ but this is not a general property of convex sets.
+
+Now we are interested in the facial structure of $\mathcal{L}_+^V$ in $\mathcal{L}^V$. 
+$\mathcal{L}_+^V$ is known to be a face of $\mathcal{S}_+^V$, and one can understand the facial structure of $\mathcal{L}_+^V$ by restricting the ambient matrix space to $\mathcal{L}^V$. 
+Indeed, for any $L\in \mathcal{L}_+^V$ with rank $d$, $L$ can be  written by $L=Q^{\top} Q$ for some  rank $d$ matrix $Q\in \mathbb{R}^{d\times n}$, c.f., (\ref{eq:conf2}), and we have  
+\begin{equation}\label{eq:realface}
+F_{\mathcal{L}_+^V}(L)=\{Q^{\top}A^{\top}AQ: A\in \mathbb{R}^{d\times d}\},
+\end{equation}
+see, e.g., \cite{pataki2000geometry}. 
+Based on (\ref{eq:realface}) the following properties easily follow.
+\begin{prop}\label{prop:realface}
+Let $L\in \mathcal{L}_+^V$ be a matrix with rank $d$.
+Then $\dim F_{\mathcal{L}_+^V}(L)={d+1 \choose 2}$.
+
+For $M\in \mathcal{L}^V$,  the hyperplane  $\{X\in \mathcal{L}^V: \langle X, M\rangle=0\}$ exposes $F_{\mathcal{L}_+^V}(L)$ if and only if 
+$\rank L+\rank M=|V|-1$, $\langle L, M\rangle=0$, and $M\succeq 0$.
+\end{prop}
+
+\subsection{Connelly's Sufficient Condition}
+The following is Connelly's super stability condition.
+\begin{theorem}[Connelly~\cite{connelly1982rigidity}]\label{thm:connelly}
+Let  $(G,\sigma,p)$ be  a $d$-dimensional tensegrity  with $n$ vertices, and suppose that 
+\begin{itemize}
+\item[(i)]  it has a strictly proper equilibrium stress $\omega$ such that 
+$L_{G,\omega}\succeq 0$ and $\rank L_{G,\omega}=n-d-1$, and 
+\item[(ii)]  there is no non-zero symmetric matrix $S$ of size $d\times d$ such that 
+\[
+(p_i-p_j)^{\top} S(p_i-p_j)=0\qquad (ij\in E(G)).
+\]
+\end{itemize}
+Then $(G,\sigma,p)$ is universally rigid.
+\end{theorem}
+The condition (ii)  is referred to as the {\em conic condition for the edge directions}. 
+
+\if0
+Theorem~\ref{thm:connelly} can be understood as follows.
+Consider SDP problem (P) for a $d$-dimensional tensegrity $(G,\sigma, p)$.
+Then $P^{\top}P$ is primal feasible (and hence primal optimal).
+On the other hand, as $\omega$ is proper and $L_{G,\omega}\succeq 0$, 
+$\omega$ is dual feasible, and  by Proposition~\ref{dual and ESM} $\omega$ is dual optimal. 
+
+By the complementarity slackness condition, for any primal solution $X$, 
+$\langle X, L_{G,\omega}\rangle=0$ holds. 
+On the other hand, as  $\rank P^{\top}P +\rank L_{G,\omega}=d+n-(d+1)= n-1$, 
+Proposition~\ref{prop:realface} says that 
+the hyperplane $\{X\in \mathcal{L}^V: \langle X, L_{G,\omega}\rangle=0\}$  exposes $F_{\mathcal{L}_+^V}(P^{\top}P)$.
+In other words, every  primal solution $X$ belongs to $F_{\mathcal{L}_+^V}(P^{\top}P)$, 
+and by (\ref{eq:realface}) $X$ is written by $X=P^{\top}A^{\top}AP$ for some $A\in \mathbb{R}^{d\times d}$.
+In terms of tensegrities, this means that  any tensegrity $(G,\sigma, q)$ dominated by $(G,\sigma,p)$ is an affine image of $(G,\sigma, p)$, i.e., 
+$q_i=Ap_i\ (i\in V(G))$ for some $A\in \mathbb{R}^{d\times d}$.
+
+Again by the complementarity slackness condition along with strictly properness of $\omega$, 
+$\|q_i-q_j\|=\|p_i-p_j\|$ for any $ij\in E(G)$. Putting $q_i=Ap_i\ (i\in V(G))$  into this, 
+we get $(p_i-p_j)^{\top} (I_d-A^{\top}A)(p_i- p_j)=0$ for every edge $ij\in E(G)$. 
+By the conic condition for the edge directions, this finally implies that $A^{\top}A=I_d$, i.e.,  $A$ is orthogonal, and  $p$ and  $q$ are congruent.
+\fi
+
+Connelly~\cite{connelly2005generic} pointed out that for a {\em generic} bar-joint framework with at least $d+1$ vertices the conic condition for the edge directions always holds.
+This implies the following simplified version of Theorem~\ref{thm:connelly}.
+\begin{theorem}[Generic version of Connelly's super stability condition]\label{thm:connelly_generic}
+Suppose that a generic $d$-dimensional tensegrity $(G,\sigma,p)$ with $n$ vertices has a strictly proper equilibrium stress $\omega$ such that 
+$L_{G,\omega}\succeq 0$ and $\rank L_{G,\omega}=n-d-1$.
+Then $(G,\sigma,p)$ is universally rigid.
+\end{theorem}
+ 
+
+ Recent papers~\cite{alfakih2013affine,connellygortlertheran} examine how to ensure the conic condition for the edge directions without genericity. 
+ For practical purpose the following statement due to Alfakih and Nguyen would be sufficiently general.
+ \begin{theorem}[Alfakih and Nguyen~\cite{alfakih2013affine}] \label{thm:alfakih}
+Let $(G,\sigma,p)$ be a $d$-dimensional tensegrity such that $p(\overline{N}_G(i))$ affinely spans $\mathbb{R}^d$ for each $i\in V(G)$.
+Suppose also that $(G,\sigma,p)$ has a strictly proper equilibrium stress $\omega$ such that 
+$L_{G,\omega}\succeq 0$ and $\rank L_{G,\omega}=n-d-1$.
+Then the conic condition for the edge direction holds.
+\end{theorem}
+
+\subsection{Characterization by Gortler-Thuston}
+Gortler-Thuston~\cite{GT} gave a reverse direction of Theorem~\ref{thm:connelly_generic} for bar-joint frameworks.
+\begin{theorem}[Gortler-Thurston~\cite{GT}]\label{thm:gortler_thurston}
+A generic $d$-dimensional bar-joint framework $(G,p)$ with $n\geq d+2$ vertices is universally rigid 
+if and only if it has an equilibrium stress $\omega$ such that 
+$L_{G,\omega}\succeq 0$ and $\rank L_{G,\omega}=n-d-1$.
+\end{theorem}
+
+The sufficiency follows from Theorem~\ref{thm:connelly_generic}. 
+The proof of the necessity goes as follows.
+Suppose that $(G,p)$ is a universally rigid generic framework, and we want to find  $L_{G,\omega}$ as given in the statement.
+We consider the face $F_{\mathcal{L}_+^V}(P^{\top}P)$. 
+By Proposition~\ref{prop:realface}, $F_{\mathcal{L}_+^V}(P^{\top}P)$ is exposed by the hyperplane $\{X\in \mathcal{L}^V: \langle X, L\rangle=0\}$ for some $L\in \mathcal{L}^V_+$ with 
+\begin{align}
+&\rank P^{\top}P+\rank L=n-1, \label{eq:GT1}\\
+&\langle P^{\top} P, L\rangle=0. \label{eq:GT2} 
+\end{align}
+ By $L\in \mathcal{L}^V_+$, we have $L\succeq 0$, and by (\ref{eq:GT1}), we also have $\rank L=n-d-1$.
+ Hence, if $L=L_{G,\omega}$ for some $\omega:E\rightarrow \mathbb{R}$ (i.e., $(i,j)$-th entry of $L$ is zero if $ij\notin E$), 
+ then Proposition~\ref{prop dual and ESM} and  (\ref{eq:GT2})  imply that $\omega$ is an equilibrium stress. 
+ %(Note that there is no sign condition as   $(G,p)$ is a bar-joint framework.) 
+Therefore, what is remaining is to prove that  $F_{\mathcal{L}_+^V}(P^{\top}P)$ is exposed by the hyperplane defined by $L_{G,\omega}$ for some $\omega$. 
+
+To find such $L_{G,\omega}$, consider the subspace 
+\[
+\mathcal{L}(G):={\rm span}\{F_{ij}: ij\in E(G)\}
+\]
+of $\mathcal{L}^V$. 
+The idea is to look at the projection $\pi$ of $\mathcal{L}^V$ to $\mathcal{L}(G)$,
+and compute the hyperplane $H$ of $\mathcal{L}(G)$ exposing the minimal face of  $\pi(P^{\top}P)$ in $\pi(\mathcal{L}^V)$.
+Then  this hyperplane $H$  is defined by $L\in \mathcal{L}(G)$, which is equivalent to having an expression $L=L_{G,\omega}$ for some $\omega$,
+and $\pi^{-1}(H)$ (defined by $L$) would be the hyperplane of $\mathcal{L}^V$ exposing $F_{\mathcal{L}_+^V}(P^{\top}P)$  as required.
+
+There is one technical subtlety in this argument: 
+the minimal face of  $\pi(P^{\top}P)$ in $\pi(\mathcal{L}_+^V)$ may not be exposed. 
+(Even if $\mathcal{L}_+^V$ is exposed, $\pi(\mathcal{L}_+^V)$ may not be exposed.)
+The main technical observation of Gortler-Thurston~\cite{GT} is to prove that, if $P^{\top} P$ is generic in a certain sense, $\pi(P^{\top}P)$ is exposed.  
+
+Our proof follows the same technique, and a detailed description will be given in Section~\ref{sec:tensegrity}. 
+In order to give a rigorous discussion,  we review the following materials  from  \cite{GT}.
+ 
+ %We first introduce the following concept of  genericity over semi-algebraic sets.
+  A subset of a Euclidean space is {\em semi-algebraic} over $\mathbb{Q}$ if it is described by finite number of algebraic equalities and inequalities
+        whose coefficients are rational.
+%        If it is described only by algebraic equailities, it is algebraic over $\mathbb{Q}$.
+        Let $S$ be a semi-algebraic set defined over $\mathbb{Q}$.
+        A point $x \in S$ is {\em generic in} $S$ if there is no rational coefficient polynomial $f$
+        such that $f(x)=0$ and $f(y) \neq 0$ for some $y \in S$.
+        A point $x \in S$ is {\em locally generic in} $S$ if there is a neighborhood $U$ of $x$ such that $x$ is generic in $S \cap U$.
+    The following proposition can be used to "transfer" the genericity of a point configuration  $p$ to  $P^{\top}P$. 
+    \begin{prop} [{Gortler-Thurston~\cite[Lemma 2.6]{GT}}]\label{prop inherit genericity}
+        Let $S$ be a semi-algebraic set and $f$ be an algebraic map from $S$ to a Euclidean space both defined over $\mathbb{Q}$.
+        If $x$ is generic in $S$, $f(x)$ is generic in $f(S)$. 
+        If $x$ is locally generic in $S$, $f(x)$ is locally generic in $f(S)$.
+    \end{prop}
+
+%The following two propositions suggest how to construct the face or the exposing hyperplane of $C$ from those of $\pi(C)$. 
+%\begin{prop}[{Gortler-Thurston~\cite[Proposition 4.14]{GT}}]\label{propGT}
+%Let $C\subseteq \mathbb{R}^k$ be a convex set and $\pi:\mathbb{R}^k\rightarrow \mathbb{R}^m$ be a projection.
+%For any $y\in \pi(C)$ and $x$ in the relative interior of $\pi^{-1}(y)\cap C$, 
+%$F_C(x)=\pi^{-1}(F_{\pi(C)}(y))\cap C$.
+%\end{prop}
+
+Let $C$ be a non-empty convex set in a Euclidean space. 
+$C$ is {\em line-free} if it contains no complete affine line.
+A point  $x \in C$ is {\em $k$-extreme} if $\dim F_C(x) \leq k$.
+We denote by $\text{ext}_k(C)$ the set of $k$-extreme points of $C$.
+%We will use Proposition~\ref{propGT} and Theorem~\ref{thmGT2} in the following combined form, (which is also explicit in the proof of the main theorem of \cite{GT}). 
+
+We will use the following combination of \cite[Proposition 4.14]{GT} and \cite[Theorem 2]{GT}, which is also explicit in the proof of the main theorem of \cite{GT}.
+ \begin{prop} \label{prop:GT}
+        Let $C$ be a closed line-free convex semi-algebraic set in $\mathbb{R}^m$, and $\pi:\mathbb{R}^m\rightarrow \mathbb{R}^n$ be a projection, both defined over $\mathbb{Q}$.
+       Suppose that $x$ is locally generic in $\text{ext}_k(C)$ for some $k$ and $\pi^{-1}(\pi(x))\cap C$ is a singleton set.
+        Then there exists a hyperplane $H$ in $\mathbb{R}^n$ such that $\pi^{-1}(H)$ exposes $F_C(x)$.
+    \end{prop}   
+
+\section{Characterizing the Universal Rigidity of Tensegrities}\label{sec:tensegrity}
+In this section we prove an extension of Theorem~\ref{thm:gortler_thurston} to tensegrities.
+ \begin{theorem} \label{maintheoremtens}
+        Let $(G,\sigma,p)$ be a generic $d$-dimensional tensegrity with $n \geq d+2$ vertices.
+        Then  $(G,\sigma,p)$ is universally rigid if and only if  it has a strictly proper equilibrium stress $\omega$ such that 
+        $\rank L_{G,\omega}=n-d-1$ and $L_{G,\omega}\succeq 0$.
+ \end{theorem}  
+ The sufficiency follows from Theorem~\ref{thm:connelly_generic}, and we focus on the necessity.
+ When applying Gortler-Thurston's  proof  to tensegrities, we need to further ensure that $\omega$ is proper, i.e., the sign condition~(\ref{eq:proper}). 
+ In the above proof sketch, this requires to find an exposing hyperplane of $F_{\mathcal{L}_+^V}(P^{\top}P)$ satisfying a sign condition on non-zero entries. We show how to get around this  by a simple trick.
+
+\begin{proof}[Proof of Theorem~\ref{maintheoremtens}]
+To see the necessity, suppose that $(G,\sigma,p)$ is universally rigid. 
+Translate the configuration so that the center of gravity is at the origin.
+Our idea is to introduce a slack variable for each constraint of (P). 
+For this, we consider the ambient space ${\cal K}$ and convex cone ${\cal K}_+$ defined by
+\begin{align*}
+\mathcal{K}:={\cal L}^V\times \mathbb{R}^{E_\pm} \times \{0\}^{E_0} \text{ and }
+\mathcal{K}_+:={\cal L}^V_+\times \mathbb{R}^{E_\pm}_{\geq 0} \times \{0\}^{E_0},
+\end{align*}
+respectively, where $E_{\pm}=E_+ \cup E_-$.
+In the following discussion, an element in ${\cal K}$ is often denoted by a pair $(X,s)$ with $X \in {\cal L}^V$ and $s \in \mathbb{R}^{E_\pm} \times \{0\}^{E_0}$.
+$\langle \cdot \rangle$ denotes the Euclidean inner product over ${\cal K}$.
+Consider the following SDP over $\mathcal{K}$:
+    \[
+\begin{array}{llll}
+        \text{(P')} &  \text{max.}  & 0 \\
+         & \text{s.t.}  & \langle (X,s), (F_{ij}, \sigma(ij) {\bm e}_{ij}) \rangle   =  \| p_i-p_j\|^2 &(ij \in E) \\
+         &              & (X,s) \in \mathcal{K}_+,
+    \end{array}
+\]
+where ${\bm e}_{ij}$ denotes the unit vector in $\mathbb{R}^E$ such that the $ij$-th entry is one.
+Observe that $X$ is feasible in (P) if and only if  $(X,s)$ is feasible in (P') for some (unique) $s\in \mathbb{R}_{\geq 0}^{E_\pm} \times \{0\}^{E_0}$.
+As $(G,\sigma,p)$ is universally rigid, Proposition~\ref{prop:uniqueness} implies that $(P^{\top}P, {\bm 0})\in \mathcal{K}$ is the unique solution of (P').
+
+%The dual problem  is changed to 
+%\[
+%    \begin{array}{llll}
+%        \text{(D')} & \text{min.}  &  \langle (P^\top P), L_{G,\omega} \rangle \\
+%         & \text{s.t.}  & (L_{G,\omega},t) \in \text{span} \{(F_{ij},-\sigma(ij)\bm{e}_{ij})\mid ij \in E \} \\
+%         &   & (L_{G,\omega},t) \in \mathcal{K}_+.
+%    \end{array}
+%\] 
+ We shall apply Proposition~\ref{prop:GT} to this setting.
+ To do so, we need to prove the local genericity of $(P^{\top}P, {\bm 0})$. 
+% 
+%    Let $\mathcal{S}^n_{\leq r} \subseteq \mathcal{S}^n$ be the set of all $n \times n$ symmetric matrices whose rank is at most $r$.
+    \begin{claim} \label{claim:tensegrity}
+        Let $k=\binom{d+1}{2}$.
+        Then $(P^\top P,\bm{0})\in \mathcal{K}$ is locally generic in $\text{ext}_k(\mathcal{K}_+)$.
+    \end{claim}
+    \begin{proof}
+        A map $f: \mathcal{C}(V) \rightarrow \mathcal{L}^V_+$; $p \mapsto P^\top P$ is algebraic over $\mathbb{Q}$ and
+        $f(\mathcal{C}_d(V) )$ equals to $\mathcal{L}_{+,d}:=\{L\in \mathcal{L}^V_+: \rank L=d\}$ by (\ref{eq:conf2}).
+        Hence, by Proposition \ref{prop inherit genericity}, $P^\top P$ is generic in $\bigcup_{i\leq d} \mathcal{L}_{+,i}$.
+%        Since $|V| \geq d+1$, the image of $\mathcal{S}^V_+ \cap \mathcal{S}^V_{\leq d}$ by the map $X \mapsto U_VXU_V$ is 
+%        $\mathcal{S}^V_+ \cap \mathcal{S}^V_{\leq d} \cap \{J_V\}^\bot$.
+%        
+
+	
+        
+        From Proposition~\ref{prop:realface} with $k=\binom{d+1}{2}$, 
+        \begin{equation}\label{eq:ten_proof0}
+        \text{ext}_k(\mathcal{L}_+^V)=\left\{L\in \mathcal{L}^V_+:\binom{\rank L+1}{2} \leq k \right\}=\bigcup_{i\leq d} \mathcal{L}_{+,i}.
+        \end{equation}
+        Hence,  $P^\top P$ is generic in  $\text{ext}_k(\mathcal{L}_+^V)$.
+        (\ref{eq:ten_proof0}) also implies 
+        \begin{equation}\label{eq:ten_proof1}
+        \text{ext}_k(\mathcal{K}_+) = \left\{ (L,s) \in \mathcal{K}_+ : \binom{\rank  L+1}{2} + \|s\|_0  \leq k \right\},
+        \end{equation}
+        where $\|s\|_0$ denotes the number of non-zero elements of $s$.
+        By the lower continuity of rank, 
+        there exists a neighborhood $U$ of $P^{\top}P$ in $\mathcal{L}^V$ in which the rank of any matrix is at least $d$.
+   By (\ref{eq:ten_proof1}) and $k={\d+1 \choose 2}$, we have
+   \[
+   \left(U \times \mathbb{R}_{\geq 0}^{E_\pm} \times \{0\}^{E_0} \right)\cap \text{ext}_k(\mathcal{K}_+) = \left\{ (L,\bm{0}) \in \mathcal{K}_+ : \rank L =d \right\}.
+   \]
+%   Since 
+%   $\left\{ (X,0) \in K \mid \text{rank }(X) =d \right\} \subseteq \left( \mathcal{S}^V_+ \cap \mathcal{S}^V_{\leq d} \cap \{J_V\}^\bot \right) \times \{0\}$,
+%        
+Hence $(P^\top P, {\bm 0})$ is generic in $\left(U \times \mathbb{R}_{\geq 0}^{E_\pm} \times \{0\}^{E_0} \right)\cap \text{ext}_k(\mathcal{K}_+)$, meaning that $(P^\top P, {\bm 0})$ is locally generic in $\text{ext}_k(\mathcal{K}_+)$.
+    \end{proof}
+
+
+
+    We are now in a position to complete the proof.
+    We consider the subspace
+    \[
+    \mathcal{K}(G):=\text{span} \{ (F_{ij},\sigma(ij)\bm{e}_{ij}) :  ij\in E\}
+    \]
+    of $\mathcal{K}$,  and let $\pi: \mathcal{K} \rightarrow \mathcal{K}(G)$ be a projection.
+        Since $(P^\top P,\bm{0})$ is the unique solution of (P'), 
+        $\pi^{-1}\left(\pi( (P^\top P,\bm{0}) )\right) \cap \mathcal{K}_+$ is a singleton.
+        Since $\mathcal{K}_+$ is a closed line-free convex set and 
+        $(P^\top P,\bm{0})$ is locally generic in $\text{ext}_{\binom{d+1}{2}}(\mathcal{K}_+)$ by Claim~\ref{claim:tensegrity}, 
+        Proposition~\ref{prop:GT} can be applied. 
+        Hence,    there exists a hyperplane $H=\{(X,s)\in \mathcal{K}(G): \langle (X,s), (L,t)\rangle=0\}$ defined by $(L,t)\in \mathcal{K}(G)$ 
+        such that $\pi^{-1}(H)=\{(X,s)\in \mathcal{K}: \langle (X,s), (L,t)\rangle=0\}$ exposes $F_{\mathcal{K}_+}((P^{\top}P, {\bm 0}))$.
+        Note that $F_{\mathcal{K}_+}((P^{\top}P, {\bm 0}))=F_{\mathcal{L}_+}(P^{\top}P)\times \{\bm 0\}$.
+        This and Proposition~\ref{prop:realface} imply  
+        \begin{equation} \label{eq:ten_proof2}
+        L\succeq 0,\ \rank L=n-d-1,\  \langle P, L\rangle=0,
+        \end{equation}
+        and  
+        \begin{equation}\label{eq:ten_proof3}
+        t_{ij} > 0 \qquad (ij\in E_\pm).
+        \end{equation}
+        
+        By $(L,t)\in \mathcal{K}(G)$, $(L,t)=\sum_{ij\in E} \omega_{ij} (F_{ij}, \sigma(ij){\bm e}_{ij})$ for some $\omega:E\rightarrow \mathbb{R}$.
+        Hence $L=L_{G,\omega}$. By $\langle P, L\rangle=0$ from (\ref{eq:ten_proof2}), $\omega$ is an equilibrium stress of $(G,\sigma,p)$.
+        Moreover, (\ref{eq:ten_proof3}) implies that $\sigma(ij)\omega_{ij}=t_{ij}>0$ for every $ij\in E_\pm$, that is, $\omega$ is strictly proper.
+        Combined it with (\ref{eq:ten_proof2}), we conclude that $\omega$ satisfies the properties of the statement.
+%        
+%        
+%        
+%        
+%         
+%        such that which is parallel to $\pi$ and $H \cap K = \text{face}_K ((U_VP^\top PU_V,0))$.
+%        Since $H$ includes the origin and $K$ is self-dual, $H$ must be expressed as $H = \{(\Omega^*,t^*)\}^\bot$ for some $(\Omega^*,t^*) \in K$.
+%        Since $H$ is parallel to $\pi$, $(\Omega^*,t^*) \in M$, so $(\Omega^*,t^*)$ is an optimal solution of (D').
+%
+%        $H$ is tangent to $K$ exactly at $\text{face}_K ((U_VP^\top PU_V,0))$, so every component of $t^*$ is non-zero and $\text{rank} \Omega^*$ must be $|V|-d-1$ 
+%        from Proposition \ref{propexpcond2}.
+%        From Proposition \ref{prop dual and ESM}, $\Omega^*$ is a proper PSD ESM of $(G,\sigma,p)$. $(t^*)_{ij} \neq 0$ implies $\omega^*_{ij} \neq 0$, so $\Omega^*$ is strict, 
+%        which completes the proof.
+    \end{proof}
+
+
+\section{群対称なテンセグリティへの拡張}
+    この章では定理~\ref{maintheoremtens}を群対称なテンセグリティに拡張する．
+    以下，次の記法を用いる．
+    $\Gamma$を有限群とし，$e$を$\Gamma$の単位元とする．
+    $n \times n$の実数行列全体を$M_n(\mathbb{R})$とし，$n$次の一般線形群を$GL_n(\mathbb{R})$で表す．
+    $O(\mathbb{R}^n)$で$n$次の直交群を表す．
+    $A \in \mathbb{R}^{k \times l}$, $B \in \mathbb{R}^{k' \times l'}$に対して，
+    その直和$A \oplus B \in \mathbb{R}^{(k+k')\times (l+l')}$およびテンソル積$A \otimes B \in \mathbb{R}^{kk' \times ll'}$を
+    \[
+        A \oplus B =
+        \begin{pmatrix}
+        A & O \\
+        O & B 
+        \end{pmatrix} 
+    \text{ and }
+        A \otimes B =
+        \begin{bmatrix} 
+            a_{11}B & \cdots & a_{1l}B \\
+            \vdots & \ddots & \vdots \\
+            a_{k1}B & \cdots & a_{kl}B
+        \end{bmatrix}
+    \]
+    で定める．
+    $\mathbb{R}^{k \times l}$の部分集合$\mathcal{F}$に対して，$\mathbb{R}^{nk \times nl}$の部分集合$I_n \otimes \mathcal{F}$を
+    \[
+        I_n \otimes \mathcal{F} = \{ I_n \otimes X : X \in \mathcal{F} \}
+    \]
+    で定める．
+    
+\subsection{定義と主結果}
+    まず，$\Gamma$-対称グラフを定義する．
+    
+    $\hat{V}$を有限集合とする．
+    $\hat{V}$を頂点集合とする自明なラベルのループを持たない可逆な$\Gamma$ラベルつき有向グラフを$\Gamma$-gainグラフという．
+    すなわち，$S=\hat{V} \times \hat{V} \times \Gamma \setminus \{(v,v,e) : v \in \hat{V}\}$上に同値関係$\sim$を
+    \[
+    (u,v,\gamma) \sim (u',v',\gamma') \Longleftrightarrow (u',v',\gamma') = (u,v,\gamma) \text{ or } (u',v',\gamma')=(v,u,\gamma^{-1}) 
+    \]
+    で定義したとき，$\hat{V}$と$S / \sim$の部分集合$\hat{E}$の組$(\hat{V},\hat{E})$を$\Gamma$-gainグラフという．
+    
+    $\Gamma$-gainグラフ$\hat{G}=(\hat{V},\hat{E})$に対して，無向グラフ$G=(V,E)$であって，$V=\Gamma \times \hat{V}$かつ
+    \[
+        (\alpha,u)(\beta,v) \in E \Longleftrightarrow (u,v,\alpha^{-1}\beta) \in \hat{E}   
+    \]
+    を満たすものを$\hat{G}$のliftという．
+    ある$\Gamma$-gainグラフのliftになっている無向グラフを$\Gamma$-対称グラフという．
+    
+    以下，$G=(V,E)$を$\Gamma$-対称グラフとし，そのもとになっている$\Gamma$-gainグラフを$\hat{G}=(\hat{V},\hat{E})$とする．
+    $|\hat{V}|=\hat{n}$とする．$n=|\Gamma|\hat{n}$に注意せよ．
+    $\hat{V}$を頂点集合とする完全$\Gamma$-gainグラフの辺集合$(\hat{V} \times \hat{V} \times \Gamma \setminus \{ (v,v,e) : v \in \hat{V} \} )/\sim$を$E(K_{\hat{V}})$で表す．
+    $u \in \hat{V}$に対して頂点部分集合$\Gamma \times \{u\} \subset V$を頂点orbitという．
+    $(u,v,\gamma) \in \hat{E}$に対して辺部分集合$\{ (\alpha,u)(\alpha\gamma,v) : \alpha \in \Gamma\} \subset E$をedge orbitという．
+    
+    次に$\Gamma$-対称テンセグリティを定義する．
+    群準同型$\theta:\Gamma \rightarrow O(\mathbb{R}^d)$を点群という．
+    $d$次元configuration $p:V \rightarrow \mathbb{R}^d$が点群$\theta:\Gamma \rightarrow O(\mathbb{R}^d)$とcompatibleであるとは，
+    \[
+        \theta(\gamma) p_{(\beta,v)} = p_{(\gamma \beta,v)} \qquad (\gamma \in \Gamma, (\beta,v) \in V )
+    \]
+    を満たすことをいう．
+    $d$次元configuration $p:V \rightarrow \mathbb{R}^d$であって，$\theta$とcompatibleでありかつ
+    $p(V)=0$を満たすもの全体を$\mathcal{C}_\theta(V)$と表す．
+    
+    $d$次元テンセグリティ$(G,\sigma,p)$が点群$\theta$について$\Gamma$-対称なテンセグリティであるとは，
+    $(V,E_0)$, $(V,E_+)$, $(V,E_-)$が$\Gamma$-対称なグラフであり，かつ$p$が$\theta$とcompatibleであることをいう．
+    
+    次に群対称テンセグリティに対してgenericity modulo symmetryを定義する．
+    $\mathbb{Q}_{\theta,\Gamma}$を$\theta$と$\Gamma$から定まる，$\mathbb{Q}$の有限拡大体とする．(定義は\ref{sec:4.4}を参照)
+    $\Gamma$-対称テンセグリティがgeneric modulo symmetryであるとは，各頂点orbitの代表点たちの座標が$\mathbb{Q}_{\theta,\Gamma}$上代数的に独立であることをいう．
+    
+    では主結果を述べる．
+    \begin{theorem} \label{thm:sym}
+        $(G,\sigma,p)$を点群$\theta$について$\Gamma$-対称な$d$次元テンセグリティであってgeneric modulo symmetryなものとする．
+        また，各$i \in V(G)$について$\overline{N}_G(i)$が$\mathbb{R}^d$を張るとする．
+        このとき$(G,\sigma,p)$がuniversally rigid if and only if strictly properなequilibrium stress $\omega$であって
+        $L_{G,\omega} \succeq 0$かつ$\rank L_{G,\omega}=n-d-1$を満たすものが存在する．
+    \end{theorem}
+    
+    十分性は定理~\ref{thm:connelly}定理~\ref{thm:alfakih}より従う．
+    以下，この論文では必要性を証明する．簡単のためframeworkについてのみ証明する．
+    tensegrityに対しては前節の議論と本節の議論を合わせればよい．
+    また簡単のため本節では$\Gamma$の全ての実既約表現が絶対既約である場合(すなわち下の仮定($\star$)が満たされている場合)に限定して証明を行う．
+    一般の$\Gamma$に対する証明は次節で行う．
+    おおまかな証明の方針は次の通りである．
+    genericityを使うために，ambient spaceを群対称なラプラシアンに制限する．
+    この制限した錐の面構造を調べるために，構造定理\ref{prop:str}を用いてambient spaceを変形する．
+    この変形後の空間においてGortler-Thurstonの議論を用いる．
+    
+\subsection{(P)の対称なラプラシアンへの制限}
+    $\Gamma$-対称グラフ$G=(V,E)$に対して，$\omega:E \rightarrow \mathbb{R}$が$\Gamma$-対称なedge weightであるとは，
+    edge orbit上でweightが一定であることをいう．
+    $V=\Gamma \times \hat{V}$なので，$V$上の完全グラフは$\Gamma$-対称グラフである．
+    $V$上の完全グラフの$\Gamma$-対称なedge weightからできるラプラシアン行列を$\Gamma$-対称ラプラシアン行列といい，これら全体を$(\mathcal{L}^V)^\Gamma$と書く．
+    $(u,v,\gamma) \in E(K_{\hat{V}})$に対して，
+    \[
+        F_{(u,v,\gamma)} = \sum_{\alpha \in \Gamma} F_{(\alpha,u)(\alpha\gamma,v)}
+    \]
+    と定めると，
+    \[
+        (\mathcal{L}^V)^\Gamma = {\rm span} \{ F_{(u,v,\gamma)} : (u,v,\gamma) \in E(K_{\hat{V}})\}
+    \]
+    となる．
+    $X \in \mathcal{S}^V$に対して，$X \in (\mathcal{L}^V)^\Gamma$ if and only if 
+    $X_{(\alpha,u)(\beta,v)}=X_{(\gamma\alpha,u)(\gamma\beta,v)}$ ($(\alpha,u), (\beta,v) \in V, \gamma \in \Gamma$)かつ$X1_V=0$である.
+    半正定値ラプラシアン行列であって$\Gamma$-対称なもの全体を$(\mathcal{L}^V)^\Gamma_+$と書く．
+    
+    次のSDPを考える．
+    \[
+        \begin{array}{llll}
+        \text{(P$^\Gamma$)} &  \text{max.}  & 0 \\
+                & \text{s.t.}  & \langle X, F_{(u,v,\gamma)} \rangle   =  \langle P^\top P,F_{(u,v,\gamma)} \rangle &((u,v,\gamma) \in \hat{E}(G)) \\
+                &              & X \in (\mathcal{L}^V)^\Gamma_+.
+        \end{array}
+    \]
+    これについて次が成り立つ．
+    \begin{prop} \label{prop:1}
+        $(G,p)$がある点群$\theta$について$\Gamma$-対称かつ普遍剛なフレームワークなら(P$^\Gamma$)は唯一解を持つ．
+    \end{prop}
+    \begin{proof}
+    $p \in \mathcal{C}_\theta(V)$について，
+    \begin{equation} \label{eq:c}
+        (P^\top P)_{(\gamma\alpha,u)(\gamma\beta,v)} = p_{(\gamma\alpha,u)} ^\top p_{(\gamma\beta,v)} 
+        = p_{(\alpha,u)}^\top \theta(\gamma)^\top \theta(\gamma) p_{(\beta,v)} 
+        = p_{(\alpha,u)}^\top p_{(\beta,v)} = (P^\top P)_{(\alpha,u)(\beta,v)}
+    \end{equation}
+    なので，$P^\top P \in (\mathcal{L}^V)^\Gamma_+$である．
+    また，$X \in (\mathcal{L}^V)^\Gamma_+$について，$X$が(P$^\Gamma$)の実行可能解であることと$X$が(P)の実行可能解であることは同値である．
+    実際，$X$は$F_{(u',v',\gamma')}$らの線形結合で表すことができ，
+    \[
+        \langle F_{(u',v',\gamma')}, F_{(u,v,\gamma)} \rangle 
+        = \sum_{\alpha,\beta \in \Gamma} \langle F_{(\beta,u')(\beta\gamma',v')} , F_{(\alpha,u)(\alpha\gamma,v)} \rangle 
+        = |\Gamma| \langle F_{(u',v',\gamma')}, F_{(\alpha,u)(\alpha\gamma,v)} \rangle
+    \]
+    が成り立つ．
+    以上の議論とProposition \ref{prop:uniqueness}より題意は従う．
+    \end{proof}
+    
+\subsection{(P$^\Gamma$)のブロック対角化}
+    $\Gamma$対称な半正定値ラプラシアン行列全体$(\mathcal{L}^V)^\Gamma_+$の面構造を調べるために，下の構造定理~\ref{prop:str}を使う．
+    有限群の実既約表現$\rho$がreal typeであるとは$\rho$のcommutative algebraが$\mathbb{R}$と同型であることをいう．
+    \cite[Chapter 13.2]{serre1977linear}より，これは$\rho$が絶対既約であることと同値である．
+    本節では記述を簡単にするために次を仮定する．
+    \begin{center}
+    仮定($\star$) : $\Gamma$の既約表現は全てreal typeである．
+    \end{center}
+    また本節では$\mathbb{R}$上の表現のことを単に表現という．
+    $\tilde{\Gamma}$を$\Gamma$の既約表現の同値類の集合とする．適当に代表元をfixして，各$\rho \in \tilde{\Gamma}$は既約表現であるとする．
+    $\rho$のdegreeを$d_\rho$で表し，仮定($\star$)より，各$\rho$は行列表現$\rho:\Gamma \rightarrow GL_{d_\rho}(\mathbb{R})$であるとしてよい．
+    さらに，各$\rho$を直交表現$\rho:\Gamma \rightarrow O(\mathbb{R}^{d_\rho})$であるとしてよい．
+    \begin{equation} \label{eq:d1}
+        \sum_{\rho \in \tilde{\Gamma}} d_\rho^2 = |\Gamma|
+    \end{equation}
+    が成り立つことが知られている．自明な表現を$1$で表す．
+    
+    このとき次の構造定理が成り立つ．
+    \begin{prop} \label{prop:str}
+        $\Gamma$が仮定($\star$)を満たすとき，次を満たす直交変換$\Psi:M_n(\mathbb{R}) \rightarrow M_n(\mathbb{R})$が存在する．
+        \[
+        \Psi((\mathcal{L}^V)^\Gamma)= \mathcal{L}^{\hat{V}} \oplus \bigoplus_{\rho \in \tilde{\Gamma} \setminus \{1\}} I_{d_\rho}\otimes \mathcal{S}^{d_\rho \hat{n}}.
+        \]
+    \end{prop}
+    
+    次のSDPを考える．
+    \[
+        \begin{array}{llll}
+        \text{(P$^\Psi$)} &  \text{max.}  & 0 \\
+                & \text{s.t.}  & \langle X, \Psi(F_{(u,v,\gamma)}) \rangle   =  \langle \Psi(P^\top P), \Psi(F_{(u,v,\gamma)}) \rangle &((u,v,\gamma) \in \hat{E}(G)) \\
+                &              & X \in \Psi((\mathcal{L}^V)^\Gamma_+).
+        \end{array}
+    \]
+    このとき，$\Psi$が直交変換であることとProposition~\ref{prop:1}から次がわかる．
+    \begin{prop} \label{prop:2}
+        $(G,p)$がある点群$\theta$について$\Gamma$-対称かつ普遍剛なフレームワークなら，(P$^\Psi$)は唯一解を持つ．
+    \end{prop}
+    
+\subsection{仮定($\star$)の下でのTheorem~\ref{thm:sym}の証明} \label{sec:4.4}
+    $\mathbb{Q}_{\theta,\Gamma}$を，
+    $\theta(\gamma)$ ($\gamma \in \Gamma$)の成分と$\Psi$を表す直交行列の成分を含む$\mathbb{Q}$の有限拡大体とする．
+    $\mathbb{Q}_{\theta,\Gamma}$に対してもgenericityやlocal genericityが定まり，Proposition~\ref{prop inherit genericity}やProposition~\ref{prop:GT}について
+    同様の結果が成り立つ．
+    詳しくは\cite{GT}の後ろの方を参照．
+    
+    各$\rho \in \tilde{\Gamma}$に対して線形空間$\mathcal{K}_\rho$および錐$\mathcal{K}_{+,\rho}$を
+    \[
+    \begin{array}{ll}
+        \mathcal{K}_\rho = 
+        \begin{cases}
+            \mathcal{L}^{\hat{V}} & (\rho = 1) \\
+            \mathcal{S}^{d_\rho \hat{n}} & (\rho \in \tilde{\Gamma} \setminus \{1\})
+        \end{cases},
+        &
+        \mathcal{K}_{+,\rho} = 
+        \begin{cases}
+            \mathcal{L}^{\hat{V}}_+ & (\rho = 1) \\
+            \mathcal{S}^{d_\rho \hat{n}}_+ & (\rho \in \tilde{\Gamma} \setminus \{1\})
+        \end{cases}
+    \end{array}
+    \]
+    で定める．
+    次のambient spaceおよびconeに対してGortler-Thurstonの議論を用いる．
+    \[
+        \mathcal{K}_\Gamma=  \bigoplus_{\rho \in \tilde{\Gamma}} I_{d_\rho} \otimes  \mathcal{K}_\rho 
+        \text{ and }
+        \mathcal{K}_{+,\Gamma} =  \prod_{\rho \in \tilde{\Gamma}} I_{d_\rho} \otimes  \mathcal{K}_{+,\rho}
+    \]
+    構造定理より，
+    $\mathcal{K}_\Gamma= \Psi((\mathcal{L}^V)^\Gamma)$および$\mathcal{K}_{+,\Gamma} = \Psi((\mathcal{L}^V)^\Gamma_+)$
+    であることに注意する．
+    $X \in \mathcal{K}_\Gamma$に対して，$X_\rho \in \mathcal{K}_\rho$を
+    \[
+        X= \bigoplus_{\rho \in \tilde{\Gamma}} I_{d_\rho} \otimes X_\rho
+    \] 
+    を満たすように定める．
+    点群$\theta:\Gamma \rightarrow O(\mathbb{R}^d)$における$\rho \in \tilde{\Gamma}$の重複度を$m_\rho$で表す．
+    degreeを比較することで
+    \begin{equation} \label{eq:a}
+        \sum_{\rho \in \tilde{\Gamma}} d_\rho m_\rho=d
+    \end{equation}
+    が成り立つ．
+    rangeについて次が成り立つ．
+    \begin{prop} \label{prop:range}
+        $\Gamma$が仮定($\star$)を満たしているとする．すると，
+        写像$f:\mathcal{C}_\theta(V) \rightarrow \mathcal{K}_{+,\Gamma}; q \mapsto \Psi(Q^\top Q)$について，
+        \[
+            f(\mathcal{C}_\theta(V)) = \{ X \in \mathcal{K}_{+,\Gamma} : \rank X_\rho \leq m_\rho \quad (\rho \in \tilde{\Gamma}) \}.
+        \]
+    \end{prop}
+    この命題の証明は後に回す．
+    これを認めて，仮定($\star$)を満たす場合にTheorem~\ref{thm:sym}を証明する．
+    \begin{proof}[仮定($\star$)の下でのTheorem~\ref{thm:sym}の証明]
+    $(G,p)$を点群$\theta$に関して$\Gamma$-対称なフレームワークであり，generic modulo symmetryかつuniversally rigidなものとする．
+    \begin{claim} \label{claim:1}
+        $k=\sum_{\rho \in \tilde{\Gamma}} \binom{m_\rho+1}{2}$とする．
+        すると$\Psi(P^\top P)$は$\text{ext}_k(\mathcal{K}_{+,\Gamma})$でlocally $\mathbb{Q}_{\theta,\Gamma}$-genericである.
+    \end{claim}
+    \begin{proof}
+        $f:\mathcal{C}(V) \rightarrow \mathcal{K}_{+,\Gamma}; p \mapsto \Psi(P^\top P)$は$\mathbb{Q}_{\theta,\Gamma}$上代数的である．
+        よってProposition~\ref{prop inherit genericity}より，$\Psi(P^\top P)$は$f(\mathcal{C}_\theta(V))$内で$\mathbb{Q}_{\theta,\Gamma}$-genericである．
+        Proposition~\ref{prop:range}より，$\rank \Psi(P^\top P)_\rho = m_\rho$である．
+
+        Proposition~\ref{prop:realface}より，
+        \begin{equation} \label{eq:b}
+            \text{ext}_k(\mathcal{K}_{+,\Gamma}) = \left\{ X \in \mathcal{K}_{+,\Gamma} : \sum_{\rho \in \tilde{\Gamma}} \binom{\rank X_\rho +1}{2} \leq k \right\}
+        \end{equation}
+        である．
+        rankのlower semi-continuityより，$\rank \Psi(P^\top P)_\rho = m_\rho$に注意すると$\Psi(P^\top P)_\rho$の$\mathcal{K}_\rho$における開近傍$U_\rho$であって，
+        $U_\rho$内の行列のランクが常に$m_\rho$以上であるものがとれる．
+        $\Psi(P^\top P)$の$\mathcal{K}_\Gamma$における開近傍$U=\prod_{\rho \in \tilde{\Gamma}} I_{d_\rho} \otimes U_\rho$について，(\ref{eq:b})より，
+        \begin{equation} \label{eq:b1}
+            U \cap \text{ext}_k(\mathcal{K}_{+,\Gamma})
+            = \left\{ X \in \mathcal{K}_{+,\Gamma} : \rank X_\rho = m_\rho \right\}
+        \end{equation}
+        となる．
+        Proposition~\ref{prop:range}より，(\ref{eq:b1})の右辺は$f(\mathcal{C}_\theta(V))$に含まれる．
+        よって，$\Psi(P^\top P)$は$\text{ext}_k(\mathcal{K}_{+,\Gamma})$でlocally $\mathbb{Q}_{\theta,\Gamma}$-genericである．
+    \end{proof}
+    
+    $\mathcal{K}_\Gamma$の部分空間
+    \[
+        \mathcal{K}_\Gamma(G)=\text{span} \{\Psi(F_{(u,v,\gamma)}) : (u,v,\gamma) \in \hat{E}(G)\}
+    \]
+    を考え，$\pi:\mathcal{K}_\Gamma \rightarrow \mathcal{K}_\Gamma(G)$を射影とする．
+    
+    $(G,p)$は普遍剛なのでProposition~\ref{prop:2}より，$\pi^{-1}(\pi(\Psi(P^\top P))) \cap \mathcal{K}_{+,\Gamma}$はsingletonである．
+    $\mathcal{K}_{+,\Gamma}$はclosed line-free convex setであり，Claim~\ref{claim:1}より$\Psi(P^\top P)$は$\text{ext}_k(\mathcal{K}_{+,\Gamma})$で
+    locally $\mathbb{Q}_{\theta,\Gamma}$-genericなので，Proposition~\ref{prop:GT}が使える．
+    よって，ある$L \in \mathcal{K}_\Gamma(G)$で定まる超平面$H=\{\langle X,L \rangle =0 : X \in \mathcal{K}_\Gamma(G) \}$であって，
+    $\pi^{-1}(H)=\{\langle X,L \rangle =0 : X \in \mathcal{K}_\Gamma \}$が$F_{\mathcal{K}_{+,\Gamma}}(\Psi(P^\top P))$をexposeするものが取れる．
+    \[
+        F_{\mathcal{K}_{+,\Gamma}}(\Psi(P^\top P)) = \prod_{\rho \in \tilde{\Gamma}} I_{d_\rho} \otimes F_{\mathcal{K}_{+,\rho}} (\Psi(P^\top P)_\rho)
+    \]
+    に注意すると，Proposition~\ref{prop:realface}および半正定値錐の面構造から
+    \[
+        L_\rho \succeq 0, \langle \Psi(P^\top P)_\rho, L_\rho \rangle=0,
+        \rank L_1= \hat{n}-m_1-1, \rank L_\rho = \hat{n}d_\rho-m_\rho (\rho \in \tilde{\Gamma} \setminus \{1\})
+    \]
+    が言える．(\ref{eq:d1}), (\ref{eq:a})より，
+    \[
+        \rank L = \hat{n}-m_1-1 + \sum_{\rho \in \tilde{\Gamma} \setminus \{1\}} d_\rho(\hat{n}d_\rho-m_\rho) = \hat{n}|\Gamma|-d-1=n-d-1
+    \]
+    となる．$L \in \mathcal{K}_\Gamma(G)$なので，ある$\omega_{(u,v,\gamma)} ((u,v,\gamma) \in \hat{E}(G))$を用いて，
+    \[
+        L=\sum_{(u,v,\gamma) \in \hat{E}(G)} \omega_{(u,v,\gamma)}\Psi(F_{(u,v,\gamma)})
+    \]
+    と書ける．
+    すると$\Psi^{-1}(L)=\sum_{(u,v,\gamma)\in \hat{E}(G)} \omega_{(u,v,\gamma)}F_{(u,v,\gamma)}$はstress matrixであり，
+    \[
+        \Psi^{-1}(L) \succeq 0, \rank \Psi^{-1}(L)=n-d-1, \langle P^\top P, \Psi^{-1}(L) \rangle =0
+    \]
+    を満たすので，題意が従う．
+    \end{proof}
+    
+\subsection{構造定理およびProposition~\ref{prop:range}の証明} \label{sec:4.5}
+    残っていた構造定理の証明とProposition~\ref{prop:range}の証明をする．
+    
+    $R:\Gamma \rightarrow GL(\mathbb{R}^\Gamma)$を(right) regular representationとする．
+    すなわち$R(\gamma) \in \mathbb{R}^{\Gamma \times \Gamma}$を
+    \[
+        R(\gamma) = \sum_{\alpha \in \Gamma} E_{\alpha,\alpha\gamma} 
+    \]
+    で定める．
+    構造定理より強い次のことが言える．
+    \begin{prop} \label{prop:3}
+        直交変換$\Psi:M_n(\mathbb{R}) \rightarrow M_n(\mathbb{R})$であって，次を満たすものが存在する．
+        \begin{itemize}
+            \item[(i)] $\Psi(R(\gamma) \otimes E_{uv}) = \bigoplus_{\rho \in \tilde{\Gamma}} I_{d_\rho} \otimes \rho(\gamma) \otimes E_{uv}$.
+            \item[(ii)] $\Psi((\mathcal{L}^V)^\Gamma) = \mathcal{K}$.
+        \end{itemize}
+    \end{prop}
+    \begin{proof}
+        $R$はregular representationなので$R$における$\rho \in \tilde{\Gamma}$の重複度は$d_\rho$である．
+        同値な直交表現は直交変換で移り合うので，ある直交行列$Z \in O(\mathbb{R}^\Gamma)$が存在して，
+        \[
+            Z^\top R(\gamma) Z = \bigoplus_{\rho \in \tilde{\Gamma}} I_{d_\rho} \otimes \rho(\gamma)
+        \]
+        となる．
+        $\Psi:M_n(\mathbb{R}) \rightarrow M_n(\mathbb{R}); X \mapsto (Z \otimes I_{\hat{n}})^\top X (Z \otimes I_{\hat{n}})$とすると，
+        $\Psi$は直交変換であり(i)を満たす．
+        $1_V \in \ker X$ if and only if $\bm{e}_1 \otimes 1_{\hat{n}} \in \ker \Psi(X)$であることに注意すると(ii)も従う．
+    \end{proof}
+    続いてrangeについての命題を示す．
+    $\Gamma$を仮定($\star$)を満たす有限群とし，
+    $(G,p)$を点群$\theta$について$\Gamma$-対称な$d$次元フレームワークとする．
+    各頂点orbitの代表点として，$(e,v)$という形のものを取る．
+    これらの座標を並べてできる$d \times \hat{n}$行列を$\tilde{P}$で表す．
+    $\theta$における既約表現$\rho \in \tilde{\Gamma}$の重複度を$m_\rho$で表す．
+    直交行列$Y \in O(\mathbb{R}^d)$を$\theta$の既約表現の直和への変換行列とすると，
+    \begin{equation} \label{eq:f}
+        Y \theta(\gamma) Y^\top = \bigoplus_{\rho \in \tilde{\Gamma}} I_{m_\rho} \otimes \rho(\gamma)
+    \end{equation}
+    が成り立つ．
+    また(\ref{eq:a})に注意して$\{1,\ldots,d\}$と
+    \[
+        \left\{ (\rho,t,k) : \rho \in \tilde{\Gamma}, 1 \leq t \leq m_\rho, 1 \leq k \leq d_\rho \right\}
+    \]
+    を同一視する．
+    これらの記法の下で$\Psi(P^\top P)$を陽に表すことができる．
+    \begin{lemma} \label{lem:1}
+        \[
+        \Psi(P^\top P)_\rho = \sum_{1 \leq t \leq m_\rho} w_{\rho,t} w_{\rho,t}^\top
+        \]
+        が成り立つ．ただし，$w_{\rho,t}$はサイズ$d_\rho \hat{n}$のベクトルで，
+        \[
+            w_{\rho,t}= \sqrt{\frac{|\Gamma|}{d_\rho}} \sum_{1 \leq k \leq d_\rho} \bm{e}_k \otimes (\tilde{P}^\top Y^\top \bm{e}_{(\rho,t,k)})
+        \]
+        で定まる．
+    \end{lemma}
+    \begin{proof}
+        まず，$P^\top P$を$\tilde{P}$と$\theta$を使って表す．
+        $P=\sum_{\gamma \in \Gamma} \bm{e}_\gamma^\top \otimes \theta(\gamma) \tilde{P}$なので，
+        \[
+            P^\top P
+            =\sum_{\alpha,\beta \in \Gamma} E_{\alpha,\beta} \otimes ( \tilde{P}^\top \theta(\alpha^{-1} \beta) \tilde{P})
+            =\sum_{\gamma \in \Gamma} R(\gamma) \otimes \tilde{P}^\top \theta(\gamma) \tilde{P}
+        \]
+        である．よって，(\ref{eq:f})とProposition~\ref{prop:3}の(i)より，
+        \begin{equation} \label{eq:d}
+            \Psi(P^\top P)_\rho = \sum_{\gamma \in \Gamma} \rho(\gamma) \otimes \tilde{P}^\top \theta(\gamma) \tilde{P}
+            =(I_{d_\rho} \otimes \tilde{P}^\top Y^\top) \left( \rho(\gamma) \otimes \bigoplus_{\rho' \in \tilde{\Gamma}}
+            \bigoplus_{1 \leq t \leq m_{\rho'}} \rho'(\gamma) \right) ( I_{d_\rho} \otimes Y\tilde{P})
+        \end{equation}
+        となる．
+        さらに計算をするために次の関係式を使う : 2つの既約表現$\rho, \rho' \in \tilde{\Gamma}$について
+        \begin{equation} \label{eq:e}
+            \sum_{\gamma \in \Gamma} \rho(\gamma) \otimes \rho'(\gamma) =
+            \begin{cases}
+                O & (\rho \neq \rho') \\
+                \frac{|\Gamma|}{d_\rho} \sum_{1 \leq k,l \leq d_\rho} E_{kl} \otimes E_{kl} & (\rho = \rho')
+            \end{cases}
+        \end{equation}
+        が成り立つ．
+        これはSchur orthogonalityから従う．
+        (\ref{eq:e})より，
+        \begin{equation}
+            \rho(\gamma) \otimes \bigoplus_{\rho' \in \tilde{\Gamma}} \bigoplus_{1 \leq t \leq m_{\rho'}} \rho'(\gamma)
+            = \frac{|\Gamma|}{d_\rho} \sum_{1\leq t \leq m_{\rho}} \sum_{1 \leq k,l \leq d_\rho} E_{kl} \otimes E_{(\rho,t,k)(\rho,t,l)}
+        \end{equation}
+        が成り立つ．
+        \[
+            \sum_{1 \leq k,l \leq d_\rho} E_{kl} \otimes E_{(\rho,t,k)(\rho,t,l)} 
+            = \left(\sum_{1 \leq k \leq d_\rho} \bm{e}_k \otimes \bm{e}_{(\rho,t,k)}\right)^\top 
+            \left(\sum_{1 \leq k \leq d_\rho} \bm{e}_k \otimes \bm{e}_{(\rho,t,k)}\right)
+        \]
+        に注意すると，(\ref{eq:d}), (\ref{eq:e})より従う．
+    \end{proof}
+    
+    \begin{proof}[Proof of Proposition \ref{prop:range}]
+        $p \in \mathcal{C}_\theta(V)$を任意に取ると，Lemma~\ref{lem:1}より$\rank \Psi(P^\top P)_\rho \leq m_\rho$であるのはよい．
+        逆に$\rank X_\rho \leq m_\rho$ ($\rho \in \tilde{\Gamma}$)なる$X \in \mathcal{K}_+$を任意に取ったときにある$p \in \mathcal{C}_\theta(V)$が存在して$\Psi(P^\top P)=X$
+        となることを示そう．
+
+        $\rho \neq 1$について，$X_\rho = \sum_{1 \leq t \leq m_\rho} v_{\rho,t} v_{\rho,t}^\top$と表せる．
+        このとき，全ての$\rho,t$についてLemma~\ref{lem:1}の$w_{\rho,t}$が$v_{\rho,t}$に一致するように$\tilde{P}$を定めることができる．
+        定め方から$v_{1,t}$ ($1 \leq t \leq m_1$)は$1_{\hat{n}}$に直交することに注意すると，
+        このようにしてできるconfiguration $p$は$p(V)=0$および$\Psi(P^\top P)=X$を満たす．
+        \end{proof}
+\section{Complete proof of Theorem~\ref{thm:sym}}
+    $\Gamma$が仮定($\star$)を満たさない場合に対してもTheorem~\ref{thm:sym}を示す．
+    このとき，$\Gamma$-対称なラプラシアン行列全体の構造定理が変わる．
+    その結果，$\Gamma$-対称な半正定値ラプラシアン行列全体のなす錐の面構造が変わるが，前節とほとんど同様の議論が成り立つ．
+    本節では，実表現と複素表現を区別し，$\Gamma$の実既約表現の同値類を$\tilde{\Gamma}$で表す．
+    代表元をfixして，各$\rho \in \tilde{\Gamma}$を実既約表現とみなす．
+    $\rho \in \tilde{\Gamma}$のdegreeを$d_\rho$で表す．
+    $\mathbb{H}$で四元数体を表す．
+    $\dim \mathbb{R}, \dim \mathbb{C}, \dim \mathbb{H} = 1, 2, 4$とする．
+\subsection{構造定理} \label{sec:5.1}
+    仮定($\star$)が満たされない場合の構造定理において，3つのtypeの実既約表現が重要である．
+
+    $\Gamma$の実既約表現$\rho \in \tilde{\Gamma}$について，
+    $\rho$のcommutative algebraはreal associative division algebraなので，フロベニウスの定理より$\mathbb{R}, \mathbb{C}, \mathbb{H}$のいずれかに同型になる．
+    それぞれの場合に$\rho$はreal type, complex type, quaternionic typeであるといい，real, complex, quaternionic typeの実既約表現全体を
+    $\tilde{\Gamma}_\mathbb{R}$, $\tilde{\Gamma}_\mathbb{C}$, $\tilde{\Gamma}_\mathbb{H}$と表す．
+    明らかに自明表現$1$はreal typeである．
+    巡回群$C_n$は$n \geq 3$の場合degreeが$2$のcomplex typeの実既約表現をもつ．
+    四元数群$Q_8$はdegreeが$1$のreal typeの実既約表現4つとdegreeが$4$のquaternionic typeの実既約表現1つをもつ．
+    各$\rho \in \tilde{\Gamma}$は実行列表現$\Gamma \rightarrow GL_{d_\rho}(\mathbb{R})$としてよい．
+    さらに各$\rho \in \tilde{\Gamma}$は直交表現$\Gamma \rightarrow O(\mathbb{R}^{d_\rho})$であるとしてよい．
+
+    \cite[Chapter 13.2]{serre1977linear}より，実既約表現は$\mathbb{C}$上では次のように分解する．
+    real typeの実既約表現は絶対既約である．すなわち，$\rho \in \tilde{\Gamma}_\mathbb{R}$は$\mathbb{C}$上でも既約である．
+    complex typeの実既約表現$\rho \in \tilde{\Gamma}_\mathbb{C}$は$\mathbb{C}$上ではある複素既約表現$\pi$とその複素共役$\overline{\pi}$の直和に分解する．
+    $\pi$と$\overline{\pi}$は同値ではなく，$\pi, \overline{\pi}$のdegreeは$d_\rho$の半分である．
+    quaternionic typeの実既約表現$\rho \in \tilde{\Gamma}_\mathbb{H}$は$\mathbb{C}$上ではある複素既約表現の2倍に分解する．
+    この複素表現は実指標を持ち，degreeは$d_\rho$の半分に等しい．
+
+    構造定理を記述するために新たに線形空間を2つ定義する．
+    $n \times n$複素行列の実行列表現全体$\mathcal{C}^{2n} \subseteq M_{2n}(\mathbb{R})$を
+    \[
+        \mathcal{C}^{2n} = \left\{
+        \begin{pmatrix}
+            c(z_{11}) & \cdots &c(z_{1n}) \\
+            \vdots & \ddots & \vdots \\
+            c(z_{n1}) & \cdots & c(z_{nn})
+        \end{pmatrix}
+        : z_{11}, z_{12}, \ldots, z_{nn} \in \mathbb{C} \right\}
+    \]
+    で定める．ただし，
+    \[
+        c(a+b\imath) = \begin{pmatrix} a& -b \\ b & a \end{pmatrix} \qquad (a,b \in \mathbb{R})
+    \]
+    とする．
+    $n \times n$四元数行列の実行列表現全体$\mathcal{H}^{4n}\subseteq M_{4n}(\mathbb{R})$を
+    \[
+        \mathcal{H}^{4n} = \left\{
+        \begin{pmatrix}
+            h(x_{11}) & \cdots &h(x_{1n}) \\
+            \vdots & \ddots & \vdots \\
+            h(x_{n1}) & \cdots & h(x_{nn})
+        \end{pmatrix}
+        : x_{11}, x_{12}, \ldots, x_{nn} \in \mathbb{H} \right\}
+    \]
+    で定める．ただし，
+    \[
+        h(a+b\imath+c\jmath+dk) = \begin{pmatrix} a & -b & c & -d \\ b & a & d & c \\ -c & -d & a & b \\ d & -c & -b & a \end{pmatrix}  \qquad (a, b, c, d \in \mathbb{R})
+    \]
+    とする．
+    
+    各$\rho \in \tilde{\Gamma}$に対して，線形空間$\mathcal{K}_\rho$を
+    \[
+        \mathcal{K}_\rho = 
+        \begin{cases}
+            \mathcal{L}^{\hat{V}} & (\rho=1) \\
+            \mathcal{S}^{d_\rho \hat{n}} & (\rho \in \tilde{\Gamma}_\mathbb{R} \setminus \{1\}) \\
+            \mathcal{C}^{d_\rho \hat{n}} \cap \mathcal{S}^{d_\rho \hat{n}} & (\rho \in \tilde{\Gamma}_\mathbb{C})  \\
+            \mathcal{H}^{d_\rho \hat{n}} \cap \mathcal{S}^{d_\rho \hat{n}} & (\rho \in \tilde{\Gamma}_\mathbb{H})
+        \end{cases}
+    \]
+    で定める．線形空間$\mathcal{K}_\Gamma$を
+    \[
+        \mathcal{K}_\Gamma=\bigoplus_{\mathbb{F}= \mathbb{R}, \mathbb{C}, \mathbb{H}} \bigoplus_{\rho \in \tilde{\Gamma}_\mathbb{F}}
+        I_{ \frac{d_\rho}{\dim \mathbb{F}}} \otimes \mathcal{K}_\rho
+    \]
+    で定める．
+    このとき次の構造定理が成り立つ．
+    \begin{prop}\label{prop:str2}
+        ある直交変換$\Psi:M_n(\mathbb{R}) \rightarrow M_n(\mathbb{R})$が存在して，$\Psi((\mathcal{L}^V)^\Gamma) =\mathcal{K}_\Gamma$となる．
+    \end{prop}
+    証明にはcomplex typeとquaternionic typeの実既約表現は「よい」行列表現を持つことを用いる．正確には以下の補題を用いる．
+    \begin{lemma} \label{lem:good}
+        \begin{itemize}
+            \item[(i)] 各$\rho \in \tilde{\Gamma}_\mathbb{C}$について，適当な基底を取ることで$\rho$の表現行列は$\rho(\gamma) \in \mathcal{C}^{d_\rho}$を満たす．
+            \item[(ii)] 各$\rho \in \tilde{\Gamma}_\mathbb{H}$について，適当な基底を取ることで$\rho$の表現行列は$\rho(\gamma) \in \mathcal{H}^{d_\rho}$を満たす．
+        \end{itemize}
+    \end{lemma}
+    \begin{proof}
+        \begin{itemize}
+            \item[(i)] $\rho:\Gamma \rightarrow GL(V)$をcomplex typeの実既約表現とする．$\rho$のcommutative algebra $\Hom (\rho, \rho)$は$\mathbb{C}$に同型なので，
+            $J \in \Hom (\rho, \rho)$であって$J^2=- \id_V$なるものがある．
+            $V$の非ゼロベクトル$v_1$を適当に選び，$v_1, J(v_1)$をbaseに加える．
+            次にcomplementから$v_2$を適当に選び，$v_2, J(v_2)$をbaseに加える．
+            これを繰り返すことで$\{v_1, J(v_1), v_2, J(v_2), \ldots \}$という形の$V$の基底を取れる．
+            $J$と$\rho(\gamma)$が可換なことに注意すると，この基底に対する$\rho(\gamma)$の表現行列は所望の形をしていることがわかる．
+            \item[(ii)] 同様にquaternionic typeの実既約表現$\rho:\Gamma \rightarrow GL(V)$について，
+            $I,J,K \in \Hom(\rho,\rho)$であって$I^2=J^2=K^2=IJK=-\id_V$なるものがある．
+            (i)と同様に，$V$の基底$B$であって，$B=\{v_1, I(v_1), J(v_1), K(v_1), v_2, I(v_2), J(v_2), K(v_2), \ldots \}$という形のものをとる．
+            $I,J,K$と$\rho(\gamma)$が可換なことに注意すると，この基底に対する$\rho(\gamma)$の表現行列は所望の形をしていることがわかる．
+        \end{itemize}
+    \end{proof}
+    以下，complex typeおよびquaternionic typeの実既約表現$\rho$について，Lemma~\ref{lem:good}のようにとった後，同値な直交表現をとることで，
+    各$\rho$はLemma~\ref{lem:good}を満たしておりかつ直交表現であるとする．
+    \begin{proof}[Proof of Proposition~\ref{prop:str2}]
+        Regular representation $R$の実既約表現への分解を求める．
+        複素既約表現$\pi$については，$R$における重複度は$\pi$のdegreeに等しかった．
+        $\rho \in \tilde{\Gamma}_\mathbb{R}$は絶対既約なので，$R$における$\rho$の重複度は$d_\rho$である．
+        $\rho \in \tilde{\Gamma}_\mathbb{C}$はdegreeが半分の相異なる複素表現に分解するので，$R$における$\rho$の重複度は$\frac{d_\rho}{2}$である．
+        $\rho \in \tilde{\Gamma}_\mathbb{H}$はdegreeが半分の複素表現の2倍に分解するので，$R$における$\rho$の重複度は$\frac{d_\rho}{4}$である．
+        よって各$\rho \in \tilde{\Gamma}$が直交表現であり，同値な直交表現は直交変換で移り合うことに注意すれば，ある直交行列$Z \in O(\mathbb{R}^\Gamma)$が存在して，
+        \begin{equation} \label{eq:5-0}
+            Z^\top R(\gamma) Z = \bigoplus_{\mathbb{F}= \mathbb{R}, \mathbb{C}, \mathbb{H}} \bigoplus_{\rho \in \tilde{\Gamma}_\mathbb{F}} 
+            I_{ \frac{d_\rho}{\dim \mathbb{F}}} \otimes \rho(\gamma)
+        \end{equation}
+        が成り立つ．
+        
+        このとき$\Psi:M_n(\mathbb{R}) \rightarrow M_n(\mathbb{R}); X \rightarrow (Z \otimes I_{\hat{n}})X(Z \otimes I_{\hat{n}})$が条件を満たす．
+        実際，(\ref{eq:5-0})より$(Z\otimes I_{\hat{n}}) 1_V = \bm{e}_1 \otimes 1_{\hat{n}}$なので，
+        $1_V \in \ker X$ if and only if $\bm{e}_1 \otimes 1_{\hat{n}} \in \ker(\Psi(X))$となる．
+    \end{proof}
+    上の証明においてRegular representationの実既約表現への分解のdegreeを比較することで
+    \begin{equation} \label{eq:5-1}
+        \sum_{\mathbb{F} = \mathbb{R}, \mathbb{C}, \mathbb{H}}
+        \sum_{\rho \in \tilde{\Gamma}_\mathbb{F}} \frac{{d_\rho}^2}{\dim \mathbb{F}} = |\Gamma|
+    \end{equation}
+    が得られることにも注意しておく．
+\subsection{rangeに関する命題}
+    $X \in \mathcal{K}_\Gamma$について，$\mathcal{K}_\rho$に射影した成分を$X_\rho$で表す．
+    点群$\theta:\Gamma \rightarrow O(\mathbb{R}^d)$における実既約表現$\rho \in \tilde{\Gamma}$の重複度を$m_\rho$で表す．
+    degreeを比較することで，
+    \begin{equation} \label{eq:5-2}
+        d = \sum_{\rho \in \tilde{\Gamma}}d_\rho m_\rho
+    \end{equation}
+    である．
+    半正定値$\Gamma$-対称ラプラシアン行列全体の$\Psi$における像$\Psi((\mathcal{L}^V)_+^\Gamma)$を${\cal K}_{+,\Gamma}$で表す．
+    このとき$p$が$\mathcal{C}_\theta(V)$全体を動く時の$\Psi(P^\top P)$のrangeが求まる．
+    \begin{prop} \label{prop:range2}
+        写像$f:\mathcal{C}_\theta(V) \rightarrow \mathcal{K}_{+,\Gamma};q\rightarrow \Psi(Q^\top Q)$について，
+        \[
+            f(\mathcal{C}_\theta(V)) = \left\{ X \in \mathcal{K}_{+,\Gamma} 
+            : \rank X_\rho \leq \dim \mathbb{F} \cdot m_\rho \quad (\rho \in \tilde{\Gamma}_\mathbb{F}) \right\}
+        \]
+        が成り立つ．
+    \end{prop}
+    このsubsectionではこれを示す．
+    $\tilde{P}, Y$を\ref{sec:4.5}と同じものとする．
+    添え字の集合$S$を
+    \begin{align*}
+        S=&\left\{(\rho,t,l): \rho \in \tilde{\Gamma}_\mathbb{R}, 1 \leq t \leq m_\rho, 1 \leq l \leq d_\rho \right\} \\
+        &\cup \bigcup_{\mathbb{F}=\mathbb{C},\mathbb{H}} \left\{ (\rho,t,l,a) : \rho \in \tilde{\Gamma}_\mathbb{F}, 1 \leq t \leq m_\rho, 
+        1 \leq l \leq \frac{d_\rho}{\dim \mathbb{F}}, 1\leq a \leq \dim\mathbb{F} \right\}
+    \end{align*}
+    で定める．(\ref{eq:5-2})より$|S|=d$であり，以下$S$を$\{1, \ldots, d\}$と同一視する．
+    次のLemmaより$\Psi(P^\top P)$を陽に計算するができる．
+    \begin{lemma}\label{lem:cal2}
+        \begin{itemize}
+            \item[(i)] real typeの実既約表現$\rho \in \tilde{\Gamma}_\mathbb{R}$について，
+            \[
+                \Psi(P^\top P)_\rho = \sum_{1 \leq t \leq m_\rho} w_{\rho,t} w_{\rho,t}^\top
+            \]
+            が成り立つ．ただし，$w_{\rho,t}$はサイズ$d_\rho \hat{n}$のベクトルで，
+            \[
+                w_{\rho,t}= \sqrt{\frac{|\Gamma|}{d_\rho}} \sum_{1 \leq k \leq d_\rho} \bm{e}_k \otimes (\tilde{P}^\top Y^\top \bm{e}_{(\rho,t,k)})
+            \]
+            で定まる．
+            \item[(ii)] complex typeの実既約表現$\rho \in \tilde{\Gamma}_\mathbb{C}$について，
+            \[
+                \Psi(P^\top P)_\rho = \sum_{1 \leq t \leq m_\rho} W_{\rho,t} W_{\rho,t}^\top
+            \]
+            が成り立つ．ただし，$W_{\rho,t}$は$d_\rho \hat{n}\times 2$行列で，
+            \begin{align*}
+                W_{\rho,t} = \sqrt{\frac{|\Gamma|}{d_\rho}} \sum_{1 \leq k \leq \frac{d_\rho}{2}} \bm{e}_k \otimes 
+                \begin{pmatrix}
+                    \tilde{P}^\top Y^\top \bm{e}_{(\rho,t,k,1)} & \tilde{P}^\top Y^\top \bm{e}_{(\rho,t,k,2)} \\
+                    \tilde{P}^\top Y^\top \bm{e}_{(\rho,t,k,2)} &-\tilde{P}^\top Y^\top \bm{e}_{(\rho,t,k,1)}
+                \end{pmatrix} 
+%%                \text{ with} (v_{(\rho,t,k,1)}= \tilde{P}^\top Y^\top \bm{e}_{(\rho,t,k,1)}, 
+%%                v_{(\rho,t,k,2)}= \tilde{P}^\top Y^\top \bm{e}_{(\rho,t,k,2)})
+            \end{align*}
+            で定まる．
+            \item[(iii)] quaternionic typeの実既約表現$\rho \in \tilde{\Gamma}_\mathbb{H}$について，
+            \[
+                \Psi(P^\top P)_\rho = \sum_{1 \leq t \leq m_\rho} W_{\rho,t} W_{\rho,t}^\top
+            \]
+            が成り立つ．ただし，$W_{\rho,t}$は$d_\rho \hat{n} \times 4$行列で，
+            \[
+                W_{\rho,t}= \sqrt{\frac{|\Gamma|}{d_\rho}} \sum_{1 \leq k \leq \frac{d_\rho}{4}} \bm{e}_k \otimes 
+                \begin{pmatrix}
+                    \tilde{P}^\top Y^\top \bm{e}_{(\rho,t,k,1)} & \tilde{P}^\top Y^\top \bm{e}_{(\rho,t,k,2)} & \tilde{P}^\top Y^\top \bm{e}_{(\rho,t,k,3)} & \tilde{P}^\top Y^\top \bm{e}_{(\rho,t,k,4)} \\
+                    \tilde{P}^\top Y^\top \bm{e}_{(\rho,t,k,2)} &-\tilde{P}^\top Y^\top \bm{e}_{(\rho,t,k,1)} &-\tilde{P}^\top Y^\top \bm{e}_{(\rho,t,k,4)} & \tilde{P}^\top Y^\top \bm{e}_{(\rho,t,k,3)} \\
+                    \tilde{P}^\top Y^\top \bm{e}_{(\rho,t,k,3)} & \tilde{P}^\top Y^\top \bm{e}_{(\rho,t,k,4)} &-\tilde{P}^\top Y^\top \bm{e}_{(\rho,t,k,1)} &-\tilde{P}^\top Y^\top \bm{e}_{(\rho,t,k,2)} \\
+                    \tilde{P}^\top Y^\top \bm{e}_{(\rho,t,k,4)} & -\tilde{P}^\top Y^\top \bm{e}_{(\rho,t,k,3)} & \tilde{P}^\top Y^\top \bm{e}_{(\rho,t,k,2)} &-\tilde{P}^\top Y^\top \bm{e}_{(\rho,t,k,1)}
+                \end{pmatrix}
+            \]
+            で定まる．  
+        \end{itemize}
+    \end{lemma}
+    証明はAppendixに回す．
+
+    複素半正定値行列，四元数半正定値行列については次が知られている．
+    
+    $a \times b$複素行列$A$に対して，$A$の各成分$a_{ij}$を$c(a_{ij})$で置き換えて得られる$2a \times 2b$実行列を$c(A)$で表す．
+    複素正方行列$A$について$\rank c(A) = 2\rank A$となる．
+    複素エルミート行列$A$について$A$が半正定値 if and only if $c(A)$が半正定値である．
+    また$\rank A =r$なる複素半正定値行列$A$はある複素ベクトル$v_1, \ldots, v_r$を用いて，$A=\sum_{1\leq i\leq r} v_i v_i^*$と表せる．
+    
+    同様に$a \times b$四元数行列$A$に対して，$A$の各成分$a_{ij}$を$h(a_{ij})$で置き換えて得られる$4a \times 4b$実行列を$h(A)$で表す．
+    \cite[Theorem~7.3]{zhang1997quaternions}より四元数エルミート行列$A$について，ランクはwell-definedであり$\rank h(A) = 4\rank A$である．
+    \cite[Remark~6.1]{zhang1997quaternions}より四元数エルミート行列$A$について$A$が半正定値 if and only if $h(A)$が半正定値である．
+    また\cite[Corollary~6.2]{zhang1997quaternions}より，
+    $\rank A =r$なる四元数半正定値行列$A$はある四元数ベクトル$v_1, \ldots, v_r$を用いて，$A=\sum_{1\leq i\leq r} v_i v_i^*$と表せる．
+    
+    $c$, $h$が行列積と可換であることに注意する．
+    また$A \in \mathcal{C}^n$について$c(X)=A$なる$X$を$c^{-1}(A)$で表す．同様に$A \in {\cal H}^n$についても同様に$h^{-1}(A)$を定める．
+    では，証明に移る．
+    \begin{proof}[Proof of Proposition~\ref{prop:range2}]
+        Lemma~\ref{lem:cal2}より，任意の$q \in {\cal C}_\theta(V)$について，
+        $\rank \Psi(Q^\top Q)_\rho \leq \dim \mathbb{F}\cdot m_\rho$ ($\rho \in \tilde{\Gamma}_\mathbb{F}$)となるのはよい．
+        よって，$\rank X_\rho \leq \dim \mathbb{F}\cdot m_\rho$ ($\rho \in \tilde{\Gamma}_\mathbb{F}$)なる$X \in {\cal K}_{+,\Gamma}$を任意にとったときに
+        $\Psi(P^\top P)=X$となるような$p \in {\cal C}_\theta(V)$が存在することを示せばよい．
+        上で述べた$\mathbb{C}, \mathbb{H}$の半正定値行列の性質より，
+        complex typeの$\rho \in \tilde{\Gamma}_\mathbb{C}$について$c^{-1}(X_\rho)$はランクが$m_\rho$以下の半正定値複素行列であり，
+        quaternionic typeの$\rho \in \tilde{\Gamma}_\mathbb{H}$について$h^{-1}(X_\rho)$はランクが$m_\rho$以下の半正定値四元数行列である．
+        よって，
+        \[
+        \begin{array} {lll}
+            X_\rho&=\sum_{1 \leq t \leq m_\rho} v_{\rho,t} v_{\rho,t}^\top & (\rho \in \tilde{\Gamma}_\mathbb{R}), \\
+            c^{-1}(X_\rho)&=\sum_{1 \leq t \leq m_\rho} v_{\rho,t} v_{\rho,t}^* & (\rho \in \tilde{\Gamma}_\mathbb{C}), \\
+            h^{-1}(X_\rho)&=\sum_{1 \leq t \leq m_\rho} v_{\rho,t} v_{\rho,t}^* & (\rho \in \tilde{\Gamma}_\mathbb{H})
+        \end{array}
+        \]
+        を満たす$v_{\rho,t}$がとれる．
+        ただし，$v_{\rho,t} \in \mathbb{R}^{d_\rho \hat{n}}$ ($\rho \in \tilde{\Gamma}_\mathbb{R}$), 
+        $v_{\rho,t} \in \mathbb{C}^\frac{d_\rho \hat{n}}{2}$ ($\rho \in \tilde{\Gamma}_\mathbb{C}$), 
+        $v_{\rho,t} \in \mathbb{H}^\frac{d_\rho \hat{n}}{4}$ ($\rho \in \tilde{\Gamma}_\mathbb{H}$)である．
+        このとき，Lemma~\ref{lem:cal2}の式で定義される$w_{\rho,t}$および$W_{\rho,t}$が
+        \[
+        \begin{array}{lll}
+            w_{\rho,t} &= v_{\rho,t}  &(\rho \in \tilde{\Gamma}_\mathbb{R}), \\
+            W_{\rho,t} &= c(v_{\rho,t}) \mqty(\dmat{1,-1}) &(\rho \in \tilde{\Gamma}_\mathbb{C}), \\
+            W_{\rho,t} &= h(v_{\rho,t}) \mqty(\dmat{1,-1,-1,-1}) &(\rho \in \tilde{\Gamma}_\mathbb{H})
+        \end{array}
+        \]
+        を満たすように$\tilde{P}$を定めることができる．すると
+        \[
+        \begin{array}{ll}
+            X_\rho = \sum_{1 \leq t \leq m_\rho} w_{\rho,t} w_{\rho,t}^\top \quad (\rho \in \tilde{\Gamma}_\mathbb{R}), &
+            X_\rho = \sum_{1 \leq t \leq m_\rho} W_{\rho,t} W_{\rho,t}^\top \quad (\rho \in \tilde{\Gamma}_\mathbb{C} \cup \tilde{\Gamma}_\mathbb{H})
+        \end{array}
+        \]
+        となり，$X_\rho=\Psi(P^\top P)_\rho$である．
+        また$v_{1,t}$ ($1 \leq t\leq m_1$)が$1_{\hat{n}}$と直交することに注意すれば$p(V)=0$なので．$p \in \mathcal{C}_\theta(V)$である．
+    \end{proof}
+
+\subsection{定理~\ref{thm:sym}の証明}
+    Proposition~\ref{prop:str2}の$\Psi$に対して，前節の(P$^\Psi$)を定義すると，Proposition~\ref{prop:2}と同じstatementが成り立つ．
+    よって，Gortler-Thurstonの議論を適用するには$\mathcal{C}^n_+$は$\mathcal{K}_{+,\Gamma} = \Psi(({\cal L}^V)^\Gamma)$の面構造を知る必要がある．
+    $\mathcal{K}_{+,\Gamma}$の直積成分には半正定値錐の他に2種類の錐が現れる．
+    これらは半正定値錐$\mathcal{S}^n_+$と$\mathcal{C}^n$のintersection $\mathcal{C}^n_+$および
+    半正定値錐$\mathcal{S}^n_+$と$\mathcal{H}^n$のintersection $\mathcal{H}^n_+$である．
+    まずこの2つの面構造についてまとめる．
+
+    $\mathcal{C}^n_+$は半正定値複素エルミート行列全体と同型なので次が成り立つ．
+    \begin{prop}\label{prop:cface}
+        ランクが$2r$である$A \in \mathcal{C}^n_+$について，$\dim F_{\mathcal{C}^n_+}(A)=r^2$である．
+
+        また$B \in \mathcal{C}^n \cap \mathcal{S}^n$について，$B$が定める超平面$\{ \langle X,B \rangle=0 : X \in \mathcal{C}^n \cap \mathcal{S}^n\}$
+        が$F_{\mathcal{C}^n_+}(A)$をexposeするif and only if
+        $\rank A + \rank B = n$, $\langle A,B \rangle=0$, $B \succeq 0$.
+    \end{prop}
+
+    $\mathcal{H}^n_+$は半正定値四元数エルミート行列全体と同型なので次が成り立つ．
+    \begin{prop} \label{prop:hface}
+        ランクが$4r$である$A \in \mathcal{H}^n_+$について，$\dim F_{\mathcal{H}^n_+}(A)=2r^2-r$である．
+
+        また$B \in \mathcal{H}^n \cap \mathcal{S}^n$について，$B$が定める超平面$\{ \langle X,B \rangle=0 : X \in \mathcal{H}^n \cap \mathcal{S}^n\}$
+        が$F_{\mathcal{H}^n_+}(A)$をexposeするif and only if
+        $\rank A + \rank B = n$, $\langle A,B \rangle=0$, $B \succeq 0$.
+    \end{prop}
+    準備は以上である．
+    $\mathbb{Q}_{\theta, \Gamma}$を$\theta(\gamma)$の成分と$\Psi$を表す直交行列の成分を含む$\mathbb{Q}$の有限拡大体とする．
+    \ref{sec:5.1}で定めた$\mathcal{K}_\Gamma$をambient spaceとし，$\mathcal{K}_{+,\Gamma}$をconeとして
+    Gortler-Thurstonの議論を用いる．Theorem~\ref{thm:sym}を証明する．
+    \begin{proof}[Complete proof of Theorem~\ref{thm:sym}]
+        $(G,p)$を点群$\theta$に関して$\Gamma$-対称なフレームワークであり，generic modulo symmetryかつuniversally rigidなものとする．
+        \begin{claim} \label{claim:2}
+            \[
+            k=\sum_{\rho \in \tilde{\Gamma}_\mathbb{R}} \binom{m_\rho +1}{2} 
+            + \sum_{\rho \in \tilde{\Gamma}_\mathbb{C}} m_\rho^2
+            + \sum_{\rho \in \tilde{\Gamma}_\mathbb{H}} (2m_\rho^2-m_\rho)
+            \]
+            とすると，$\Psi(P^\top P)$は$\text{ext}_k(\mathcal{K}_{+,\Gamma})$でlocally $\mathbb{Q}_{\theta,\Gamma}$-genericである．
+        \end{claim}
+        \begin{proof}
+            証明はProposition~\ref{prop:cface}, Proposition~\ref{prop:hface}を使うと，Proposition~\ref{claim:1}と同様にできる．
+        \end{proof}
+        $\mathcal{K}_\Gamma(G), \pi$を前節の証明と同様に定める．
+        よって，同じ議論からある$L \in \mathcal{K}_\Gamma(G)$で定まる超平面$H=\{\langle X,L \rangle =0 : X \in \mathcal{K}_\Gamma(G) \}$であって，
+        $\pi^{-1}(H)=\{\langle X,L \rangle =0 : X \in \mathcal{K}_\Gamma \}$が$F_{\mathcal{K}_{+,\Gamma}}(\Psi(P^\top P))$をexposeするものが取れる．
+        すると，Propositon~\ref{prop:realface}, Proposition~\ref{prop:cface}, Proposition~\ref{prop:hface}より，
+        \begin{align*}
+            L_\rho \succeq 0, \langle L_\rho, \Psi(P^\top P)_\rho \rangle =0, \rank L_1 = \hat{n}-m_1-1, \\ 
+            \rank L_\rho = d_\rho\hat{n} - \dim \mathbb{F} \cdot m_\rho \quad (\rho \in \tilde{\Gamma}_\mathbb{F} \setminus \{1\})
+        \end{align*}
+        が成り立つ．よって(\ref{eq:5-1}), (\ref{eq:5-2})より
+        \begin{align*}
+            \rank L &= \hat{n}-m_1-1 + \sum_{\mathbb{F} = \mathbb{R}, \mathbb{C}, \mathbb{H}}  
+            \sum_{\rho \in \tilde{\Gamma}_\mathbb{F} \setminus \{1\}}  \frac{d_\rho}{\dim \mathbb{F}}(d_\rho\hat{n} - \dim \mathbb{F} \cdot m_\rho) \\
+            &=\hat{n}|\Gamma| - d -1 = n-d-1
+        \end{align*}
+        となる．$L\in \mathcal{K}_\Gamma(G)$より，$\Psi^{-1}(L)$は$G$上の重み付きラプラシアン行列であり，
+        \[
+            \Psi^{-1}(L) \succeq 0, \langle \Psi^{-1}(L), P^\top P \rangle =0, \rank \Psi^{-1}(L)=n-d-1
+        \]
+        を満たすので題意は示される．
+    \end{proof}
+
+\section{計算例}
+    最後にブロック対角化$\Psi$がconfigurationをどのように移すのかをいくつかの例における具体的な計算で見よう．
+\subsection{$C_2$-symmetry, $C_s$-symmetry}
+    平面上の原点対称性が$C_2$-symmetryである．
+    $d=2$, $\Gamma=C_2=\{e,s\}$, $\theta(e)=I$, $\theta(s)=-I$である．
+    表現$-:C_2 \rightarrow \mathbb{R}^\times$を$-(e)=1, -(s)=-1$で定める．
+    自明な表現を$+$と書くことにすると，$C_2$の既約表現は$+$と$-$の2つである．
+    頂点数を$n=2\hat{n}$とし，頂点$p_v$ ($1\leq v \leq \hat{n}$)の座標を$(x_v, y_v)^\top$とすれば，
+    \[
+        P=\begin{pmatrix} x_1 & \cdots & x_{\hat{n}} & -x_1 & \cdots & -x_{\hat{n}} \\ y_1 & \cdots & y_{\hat{n}} & -y_1 & \cdots & -y_{\hat{n}} \end{pmatrix}
+    \]
+    となる．このとき，$\theta$における$+$, $-$の重複度$m_+$, $m_-$はそれぞれ$0$, $2$である．
+    よって$\tilde{p}_x = (x_1, \ldots, x_{\hat{n}})^\top$を代表点の$x$座標を並べたベクトル，
+    $\tilde{p}_y = (y_1, \ldots, y_{\hat{n}})^\top$を代表点の$y$座標を並べたベクトルとすると，Lemma~\ref{lem:1}より，
+    \[
+        \begin{array}{ll}
+        \Psi(P^\top P)_+ = O, & \Psi(P^\top P)_- = 2 (\tilde{p}_x \tilde{p}_x^\top + \tilde{p}_y \tilde{p}_y^\top)
+        \end{array}
+    \]
+    となる．
+
+    次に平面上の線対称性である$C_s$-symmetryを考える．
+    $y$軸に関する対称性を考えるときは$d=2$, $\Gamma=C_2$, $\theta(s)=\mqty(\dmat{-1,1})$である．
+    頂点数を$n=2\hat{n}$とし，頂点$p_v$ ($1\leq v \leq \hat{n}$)の座標を$(x_v, y_v)^\top$とすれば，
+    \[
+        P=\begin{pmatrix} x_1 & \cdots & x_{\hat{n}} & -x_1 & \cdots & -x_{\hat{n}} \\ y_1 & \cdots & y_{\hat{n}} & y_1 & \cdots & y_{\hat{n}} \end{pmatrix}
+    \]
+    である．$\theta$における$+$, $-$の重複度$m_+$, $m_-$はそれぞれ$1$, $1$なので，Lemma~\ref{lem:1}より，
+    \[
+        \begin{array}{ll}
+            \Psi(P^\top P)_+ = 2\tilde{p}_y \tilde{p}_y^\top, &
+            \Psi(P^\top P)_- = 2\tilde{p}_x \tilde{p}_x^\top
+        \end{array}
+    \]
+    となる．
+\bibliographystyle{jplain}
+\bibliography{myreference}
+\appendix
+\section{Proof of Lemma~\ref{lem:cal2}}
+Lemma~\ref{lem:cal2}を示す．証明には，実既約表現の直交性を用いる．
+$\Gamma$上の実関数全体のなす空間を${\cal F}(\Gamma)$とし，${\cal F}(\Gamma)$上に内積を
+$\langle f,g \rangle = \sum_{\gamma \in \Gamma} f(\gamma) g(\gamma)$ ($f,g \in {\cal F}(\Gamma)$)で定める．
+$M_n(\mathbb{R})$の基底として，$\{E_{lm}:1\leq l,m \leq n\}$をとる．
+$\mathcal{C}^{2n}$の基底として，$\{E_{lm} \otimes c(1), E_{lm} \otimes c(i) : 1\leq l,m\leq n \}$をとる．
+$\mathcal{H}^{4n}$の基底として，$\{E_{lm} \otimes h(1), E_{lm} \otimes h(i), E_{lm} \otimes h(j), E_{lm} \otimes h(k) : 1\leq l,m\leq n\}$をとる．
+complex typeとquaternionic typeの実既約表現はLemma~\ref{lem:good}を満たすとし，
+$\rho \in \tilde{\Gamma}_\mathbb{R}$, $\tilde{\Gamma}_\mathbb{C}$, $\tilde{\Gamma}_\mathbb{H}$について$B_\rho$で，
+$M_{d_\rho}(\mathbb{R})$, ${\cal C}^{d_\rho}$, ${\cal H}^{d_\rho}$の基底全体を表す．
+各実既約直交表現$\rho:\Gamma \rightarrow O(\mathbb{R}^{d_\rho})$について，$\rho(\gamma)$の基底$b \in B_\rho$における成分を$\rho_b(\gamma)$と書く．
+すると次が成り立つ．
+\begin{prop} \label{prop:ortho}
+    $\left\{ \sqrt{ \frac{d_\rho}{|\Gamma|} } \rho_b : \rho \in \tilde{\Gamma}, b \in B_\rho \right\}$は$\mathcal{F}(\Gamma)$の正規直交基底をなす．
+\end{prop}
+\begin{proof}
+    $\rho \in \tilde{\Gamma}_\mathbb{F}$について，$|B_\rho|=\frac{{d_\rho}^2}{\dim \mathbb{F}}$である．
+    よって(\ref{eq:5-1})よりこれらが正規直交集合をなすことを示せばよい．
+    同値でない既約表現$\rho, \rho' \in \tilde{\Gamma}$について，その成分表示$\rho_b, \rho_{b'}$ ($b \in B_\rho, b' \in B_{\rho'}$)が直交することはよい．
+    よって各$\rho$について$\left\{\sqrt{\frac{d_\rho}{\Gamma}} \rho_b:b\in B_\rho \right\}$が正規直交集合をなすことを示せばよい．
+    
+    $\rho$がreal typeならばSchur Orthogonalityより従う．
+    complex typeとquaternionic typeの実既約表現については，対応する$\mathbb{C}$上の表現に対するSchur orthogonalityを用いることで次のように示せる．
+
+    まず$\rho$がcomplex typeである場合を考える．
+    $\rho(\gamma) \in {\cal C}^{d_\rho}$なので，$\pi:\Gamma \rightarrow GL_{\frac{d_\rho}{2}}(\mathbb{C})$であって
+    $\rho(\gamma)=\Re \pi(\gamma) \otimes c(1) + \Im \pi(\gamma) \otimes c(i)$を満たすものがとれる．
+    すると，$\pi$は$\mathbb{C}$上のユニタリ表現であり，$\mathbb{C}$上で$\pi$と$\overline{\pi}$の直和が$\rho$に同値になる．
+    \ref{sec:5.1}で述べたcomplex typeの実表現の$\mathbb{C}$上での分解の仕方を思い出すと，
+    既約表現分解の一意性から，$\pi$はユニタリ既約表現であり，$\pi$と$\overline{\pi}$は同値でないとわかる．
+    よってSchur orthogonalityより
+    \[
+        \sum_{\gamma \in \Gamma} \pi_{lm}(\gamma)\overline{\pi_{l'm'}(\gamma)} = \frac{|\Gamma|}{d_\pi}\delta_{ll'}\delta_{mm'},
+        \qquad \sum_{\gamma \in \Gamma} \pi_{lm}(\gamma) \pi_{l'm'}(\gamma) = 0
+    \]
+    が成り立つ．$d_\rho=2d_\pi$に注意すると簡単な計算により$\rho$に関する直交性が確かめられる．
+
+    次に$\rho$がquaternionic typeである場合を考える．
+    $\rho \in \mathcal{H}^{d_\rho}$なので，$\rho(\gamma)=a(\gamma)\otimes h(1) + b(\gamma) \otimes h(i)+c(\gamma) \otimes h(j) + d(\gamma) \otimes h(k)$と表せる．
+    上と同様に$\pi$を定めると，$\pi$はユニタリ既約表現であり，
+    \begin{align*}
+    \pi(\gamma) &= a(\gamma) \otimes \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix} 
+            + b(\gamma) \otimes \begin{pmatrix} i & 0 \\ 0 & -i \end{pmatrix}
+            + c(\gamma) \otimes \begin{pmatrix} 0 & 1 \\ -1 & 0 \end{pmatrix}
+            + d(\gamma) \otimes \begin{pmatrix} 0 & i \\ i & 0 \end{pmatrix} %%\\
+%%                &=\sum_{1 \leq l,m \leq \frac{d_\pi}{2}} E_{lm} \otimes 
+%%                \begin{pmatrix}
+%%                    a_{lm}(\gamma) + i b_{lm}(\gamma) & c_{lm}(\gamma) + i d_{lm}(\gamma) \\
+%%                    -c_{lm}(\gamma)+ i d_{lm}(\gamma) & a_{lm}(\gamma) - i b_{lm}(\gamma)
+%%                \end{pmatrix}
+        \end{align*}
+    となる．よって上と同様に$\pi$に関するSchur orthogonalityで得られる関係式を連立することで，$\rho$に関する直交性が確かめられる．
+\end{proof}
+
+\begin{proof}[Proof of Lemma~\ref{lem:cal2}]
+    Lem~\ref{lem:1}の証明のときと同様に各$\rho \in \tilde{\Gamma}$について，
+    \begin{equation} \label{eq:ap1}
+        \Psi(P^\top P)_\rho = (I_{d_\rho}\otimes Y\tilde{P})^\top A_\rho (I_{d_\rho}\otimes Y\tilde{P})
+    \end{equation}
+    が成り立つ．ただし，
+    \[
+        A_\rho =\sum_{\gamma \in \Gamma} \rho(\gamma) \otimes 
+        \bigoplus_{\mathbb{F}= \mathbb{R}, \mathbb{C}, \mathbb{H}} \bigoplus_{\rho' \in \tilde{\Gamma}_\mathbb{F}} 
+        \bigoplus_{1 \leq t \leq m_{\rho'}} \rho'(\gamma)
+    \]
+    である．
+    (i)についてはLem~\ref{lem:1}と同じである．
+    
+    (ii)について示す．$\rho \in \tilde{\Gamma}_\mathbb{C}$とする．Proposition~\ref{prop:ortho}より，次の関係式が得られる：$\rho' \in \tilde{\Gamma}$について，
+        \[
+            \sum_{\gamma \in \Gamma} \rho(\gamma) \otimes \rho'(\gamma) = 
+            \begin{cases}
+                \frac{|\Gamma|}{d_\rho} \sum_{1 \leq l,m \leq \frac{d_\rho}{2}} E_{lm} \otimes \begin{pmatrix}
+                    E_{lm} \otimes c(1) & -E_{lm} \otimes c(\imath) \\ 
+                    E_{lm} \otimes c(\imath) & E_{lm} \otimes c(1)
+                \end{pmatrix}
+                & (\rho=\rho') \\
+                0 & (\rho \neq \rho')
+            \end{cases}
+        \]
+        である．ここで，$\rho=\rho'$のときの値は
+        \[
+            \frac{|\Gamma|}{d_\rho}
+            \left( \sum_{1 \leq l \leq \frac{d_\rho}{2}} \bm{e}_l \otimes \begin{pmatrix} \bm{e}_l \otimes c(1) \\ \bm{e}_l \otimes c(\imath) \end{pmatrix} \right)
+            \left( \sum_{1 \leq l \leq \frac{d_\rho}{2}} \bm{e}_l \otimes \begin{pmatrix} \bm{e}_l \otimes c(1) \\ \bm{e}_l \otimes c(\imath) \end{pmatrix} \right)^\top
+        \]
+        と書けることに注意する．
+        すると，
+        \begin{equation} \label{eq:ap2}
+            A_\rho = \frac{|\Gamma|}{d_\rho} \sum_{1 \leq t \leq m_\rho} U_{\rho,t}U_{\rho,t}^\top
+        \end{equation}
+        となる．ただし
+        \[
+            U_{\rho,t}= \sum_{1 \leq l \leq \frac{d_\rho}{2}} \bm{e}_l \otimes
+        \begin{pmatrix} \bm{e}_{(\rho,t,l)} \otimes c(1) \\ \bm{e}_{(\rho,t,l)} \otimes c(\imath) \end{pmatrix} 
+        \]である．よって，(\ref{eq:ap1}), (\ref{eq:ap2})より題意は従う．
+    
+    (iii)について示す．$\rho \in \tilde{\Gamma}_\mathbb{H}$とする．
+    このときProposition~\ref{prop:ortho}より，$\sum_{\gamma \in \Gamma} \rho(\gamma) \otimes \rho'(\gamma)$の値は
+    $\rho$と同値でない$\rho' \in \tilde{\Gamma}$については$0$であり，$\rho=\rho'$のときは，
+    \[
+        \frac{|\Gamma|}{d_\rho} \sum_{1 \leq l,m \leq \frac{d_\rho}{4}} E_{lm} \otimes \begin{pmatrix}
+             E_{lm} \otimes h(1) & -E_{lm} \otimes h(\imath) & E_{lm} \otimes h(\jmath) & -E_{lm} \otimes h(k) \\ 
+             E_{lm} \otimes h(\imath) & E_{lm} \otimes h(1) & E_{lm} \otimes h(k) & E_{lm} \otimes h(\jmath) \\
+            -E_{lm} \otimes h(\jmath) & -E_{lm} \otimes h(k) & E_{lm} \otimes h(1) & E_{lm} \otimes h(\imath) \\
+             E_{lm} \otimes h(k) & -E_{lm} \otimes h(\jmath) &-E_{lm} \otimes h(\imath) & E_{lm} \otimes h(1)
+        \end{pmatrix}
+    \]
+    となる．これは，$\frac{|\Gamma|}{d_\rho} B B^\top$と書ける．ただし，
+    \[
+    B = \sum_{1 \leq l \leq \frac{d_\rho}{4}} \bm{e}_l \otimes \begin{pmatrix} \bm{e}_l\otimes h(1) \\ \bm{e}_l\otimes h(\imath) 
+    \\ \bm{e}_l\otimes h(\jmath) \\ \bm{e}_l\otimes h(k) \end{pmatrix}
+    \]
+    である．よって，
+    \[
+        U_{\rho,t} = \sum_{1 \leq l \leq \frac{d_\rho}{4}} \bm{e}_l \otimes \begin{pmatrix} \bm{e}_{(\rho,t,l)}\otimes h(1) \\ \bm{e}_{(\rho,t,l)}\otimes h(\imath) 
+        \\ \bm{e}_{(\rho,t,l)}\otimes h(\jmath) \\ \bm{e}_{(\rho,t,l)}\otimes h(k) \end{pmatrix}
+    \]
+    なる$U_{\rho,t}$を用いて，$A_{\rho,t}$は(\ref{eq:ap2})と同じ式で書けるため題意は従う．
+\end{proof}
+
+
+\end{document}    
